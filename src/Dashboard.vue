@@ -69,26 +69,26 @@
 							</v-list-tile-action>
 
 							<template v-for="pipeline in commit.pipelines">
-								<v-list-tile-action v-for="stage in pipeline.stages">
-									<v-chip disabled small color="green lighten-1" text-color="white"
-											v-if="'done' === stage.state">
-										<v-avatar class="green">
-											<v-icon>{{ stage.icon }}</v-icon>
-										</v-avatar>
-										<strong>{{ stage.name }}</strong>
-									</v-chip>
-									<v-chip disabled small color="orange" text-color="white" class="pulsating"
-											v-else-if="'in_progress' === stage.state">
-										<v-avatar class="orange">
-											<v-icon>{{ stage.icon }}</v-icon>
-										</v-avatar>
-										<strong>{{ stage.name }}</strong>
-									</v-chip>
-									<v-chip disabled small color="grey lighten-4" text-color="grey" v-else>
-										<v-avatar class="grey lighten-3">
-											<v-icon>{{ stage.icon }}</v-icon>
-										</v-avatar>
-										<strong>{{ stage.name }}</strong>
+								<v-list-tile-action>
+									<v-chip
+											disabled
+											small
+											color="grey lighten-3"
+											text-color="grey"
+									>
+										<template v-for="stage in pipeline.stages">
+											<v-avatar class="green white--text" v-if="'done' === stage.state">
+												<v-icon>{{ stage.icon }}</v-icon>
+											</v-avatar>
+											<v-avatar class="orange white--text"
+													  v-else-if="'in_progress' === stage.state">
+												<v-icon>{{ stage.icon }}</v-icon>
+											</v-avatar>
+											<v-avatar class="grey white--text" v-else>
+												<v-icon>{{ stage.icon }}</v-icon>
+											</v-avatar>
+										</template>
+										<strong>{{ pipeline.name }}</strong>
 									</v-chip>
 								</v-list-tile-action>
 							</template>
@@ -135,16 +135,29 @@
 
 						let pipelines = [
 							{
+								name: "OLD",
+								stages: [
+									{
+										icon: "business",
+										context: "old-staging",
+										state: undefined
+									},
+									{
+										icon: "public",
+										context: "old-production",
+										state: undefined
+									},
+								],
+							},
+							{
 								name: "K1",
 								stages: [
 									{
-										name: "STAG",
 										icon: "business",
 										context: "buddy/pipeline/staging-k1",
 										state: undefined
 									},
 									{
-										name: "PROD",
 										icon: "public",
 										context: "buddy/pipeline/production-k1",
 										state: undefined
@@ -155,13 +168,11 @@
 								name: "K2",
 								stages: [
 									{
-										name: "STAG",
 										icon: "business",
 										context: "buddy/pipeline/staging-k2",
 										state: undefined
 									},
 									{
-										name: "PROD",
 										icon: "public",
 										context: "buddy/pipeline/production-k2",
 										state: undefined

@@ -1,5 +1,5 @@
 <template>
-	<v-app id="inspire">
+	<v-app :dark="dark">
 		<v-navigation-drawer
 				fixed
 				:clipped="$vuetify.breakpoint.lgAndUp"
@@ -47,7 +47,7 @@
 							</v-list-tile-action>
 							<v-list-tile-content>
 								<v-list-tile-title>
-									{{ child.text }}
+									{{ child.repo }}
 								</v-list-tile-title>
 							</v-list-tile-content>
 						</v-list-tile>
@@ -78,30 +78,21 @@
 					Deployments
 				</span>
 			</v-toolbar-title>
-			<v-text-field
-					flat
-					solo-inverted
-					prepend-icon="search"
-					label="Search"
-					class="hidden-sm-and-down"
-			></v-text-field>
 			<v-spacer></v-spacer>
-			<v-btn icon>
-				<v-icon>apps</v-icon>
-			</v-btn>
-			<v-btn icon>
-				<v-icon>notifications</v-icon>
+			<v-btn icon @click="dark=!dark">
+				<v-icon :class="{'grey--text': dark}">highlight</v-icon>
 			</v-btn>
 			<v-btn icon large>
 				<v-avatar size="32px">
 					<img src="//ssl.gstatic.com/s2/oz/images/sge/grey_silhouette.png">
 				</v-avatar>
 			</v-btn>
+
 		</v-toolbar>
 		<v-content>
 			<v-container fluid fill-height>
 				<v-layout justify-center align-center>
-					<router-view></router-view>
+					<router-view :key="$route.fullPath"></router-view>
 				</v-layout>
 			</v-container>
 		</v-content>
@@ -113,14 +104,43 @@
 		data: () => ({
 			dialog: false,
 			drawer: null,
+			dark: false,
 			items: [
 				{
 					icon: 'keyboard_arrow_up',
 					'icon-alt': 'keyboard_arrow_down',
-					text: 'DocPlanner',
+					text: 'Buddy',
 					model: true,
 					children: [
-						{icon: 'link', text: 'monolith-app', owner: 'DocPlanner', repo: 'monolith-app'}
+						{icon: 'link', owner: 'DocPlanner', repo:'booking-front-app'},
+						{icon: 'link', owner: 'DocPlanner', repo:'brag-app'},
+						{icon: 'link', owner: 'DocPlanner', repo:'crm-app'},
+						{icon: 'link', owner: 'DocPlanner', repo:'dashboard-app'},
+						{icon: 'link', owner: 'DocPlanner', repo:'dp-icons'},
+						{icon: 'link', owner: 'DocPlanner', repo:'dp-ui-kit'},
+						{icon: 'link', owner: 'DocPlanner', repo:'fetcher-app'},
+						{icon: 'link', owner: 'DocPlanner', repo:'hubspot-mirroring-app'},
+						{icon: 'link', owner: 'DocPlanner', repo:'integrations-app'},
+						{icon: 'link', owner: 'DocPlanner', repo:'logger-app'},
+						{icon: 'link', owner: 'DocPlanner', repo:'monolith-app'},
+						{icon: 'link', owner: 'DocPlanner', repo:'mydentista'},
+						{icon: 'link', owner: 'DocPlanner', repo:'opinion-moderation-app'},
+						{icon: 'link', owner: 'DocPlanner', repo:'opinions-app'},
+						{icon: 'link', owner: 'DocPlanner', repo:'payments-app'},
+						{icon: 'link', owner: 'DocPlanner', repo:'reservation-app'},
+						{icon: 'link', owner: 'DocPlanner', repo:'sso-app'},
+						{icon: 'link', owner: 'DocPlanner', repo:'voicemail-app'},
+						{icon: 'link', owner: 'DocPlanner', repo:'websites-app'},
+					]
+				},
+				{
+					icon: 'keyboard_arrow_up',
+					'icon-alt': 'keyboard_arrow_down',
+					text: 'Old deployment',
+					model: true,
+					children: [
+						{icon: 'link', owner: 'DocPlanner', repo: 'metrix-app'},
+						{icon: 'link', owner: 'DocPlanner', repo: 'deployments-app'},
 					]
 				},
 			]
@@ -134,7 +154,7 @@
 					name: 'repo_view',
 					params: {owner, repo}
 				})
-			}
-		}
+			},
+		},
 	}
 </script>

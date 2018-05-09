@@ -9,6 +9,9 @@
 </head>
 <body>
 <div id="app"></div>
+<script>
+	const APP_ACCESS_TOKEN = '<?php echo json_encode($_SERVER['HTTP_X_FORWARDED_ACCESS_TOKEN'] ?? ''); ?>';
+</script>
 <script src="/dist/build.js"></script>
 </body>
 </html>

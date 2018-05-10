@@ -55,3 +55,11 @@ export const QUERY_COMMITS_HISTORY = gql`
         }
     }
 `;
+
+export const QUERY_VIEWER = gql`
+    query {
+        viewer {
+            avatarUrl
+        }
+    }
+`;

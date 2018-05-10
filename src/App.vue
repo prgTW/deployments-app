@@ -82,11 +82,8 @@
 			<v-btn icon @click="dark=!dark">
 				<v-icon :class="{'grey--text': dark}">highlight</v-icon>
 			</v-btn>
-			<v-btn icon large>
-				<v-avatar size="32px">
-					<img src="//ssl.gstatic.com/s2/oz/images/sge/grey_silhouette.png">
-				</v-avatar>
-			</v-btn>
+
+			<avatar></avatar>
 
 		</v-toolbar>
 		<v-content>
@@ -100,7 +97,10 @@
 </template>
 
 <script>
+	import Avatar from "./Avatar";
+
 	export default {
+		components: {Avatar},
 		data: () => ({
 			dialog: false,
 			drawer: null,

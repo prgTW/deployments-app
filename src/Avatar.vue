@@ -33,7 +33,7 @@
 		}),
 		computed: {
 			avatarUrl: function () {
-				return this.isError ? '//ssl.gstatic.com/s2/oz/images/sge/grey_silhouette.png' : this.viewer.avatarUrl
+				return (this.isError || this.isLoading) ? '//ssl.gstatic.com/s2/oz/images/sge/grey_silhouette.png' : this.viewer.avatarUrl
 			},
 		}
 	}

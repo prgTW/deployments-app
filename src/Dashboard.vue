@@ -176,8 +176,6 @@
 
 					let commits2 = _.cloneDeep(result.data.repository.ref.target.history.edges)
 
-					commits2[0].node.status.contexts[2].state = 'PENDING';
-
 					vm.commits = _.map(commits2, (commit) => {
 						_.forEach(pipelines, (pipeline, pIdx) => {
 							_.forEach(pipeline.stages, (stage, sIdx) => {

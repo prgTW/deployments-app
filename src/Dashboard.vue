@@ -52,7 +52,7 @@
 					</v-list-tile-content>
 
 					<v-list-tile-action>
-						<v-btn color="blue" flat small round slot="activator" :href="commit.raw.url"
+						<v-btn :icon="$vuetify.breakpoint.smAndDown" color="blue" outline small round slot="activator" :href="commit.raw.url"
 							   target="_blank">
 							<v-icon class="hidden-md-and-up">link</v-icon>
 							<strong class="hidden-sm-and-down">

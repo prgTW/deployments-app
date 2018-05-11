@@ -24,7 +24,7 @@ Raven
 const httpLink = new HttpLink({
 	uri: 'https://api.github.com/graphql',
 	headers: {
-		Authorization: 'Bearer ' + APP_ACCESS_TOKEN, 
+		Authorization: 'Bearer ' + APP_ACCESS_TOKEN,
 	}
 })
 
@@ -45,7 +45,7 @@ const apolloProvider = new VueApollo({
 const routes = [
 	{
 		name: 'repo_view',
-		path: '/repos/:owner/:repo',
+		path: '/repos/:owner/:repo/:branch',
 		component: Dashboard
 	},
 ];

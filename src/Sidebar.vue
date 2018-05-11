@@ -2,7 +2,7 @@
 	<v-list dense subheader>
 		<v-subheader>{{ organization.login }}</v-subheader>
 		<v-list-tile
-				:to="{name: 'repo_view', params: {owner: repository.node.owner.login, repo: repository.node.name}}"
+				:to="{name: 'repo_view', params: {owner: repository.node.owner.login, repo: repository.node.name, branch: repository.node.defaultBranchRef.name}}"
 				v-for="(repository, i) in repositories"
 				:key="i"
 		>
@@ -31,7 +31,7 @@
 				query: QUERY_ORGANISATION_REPOSITORIES,
 				variables: function () {
 					return {
-						owner: 'DocPlanner'
+						owner: this.owner
 					}
 				},
 				result: function () {

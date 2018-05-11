@@ -10,7 +10,7 @@
 					:loading="isLoading"
 					@click.stop="fetchCommits"
 			>
-				{{ refreshTimeout }}
+				{{ refreshTimeoutNice }}
 			</v-btn>
 			<v-snackbar bottom center multi-line v-model="isLoading" color="info">
 				<strong>Loading</strong>
@@ -52,7 +52,8 @@
 					</v-list-tile-content>
 
 					<v-list-tile-action>
-						<v-btn :icon="$vuetify.breakpoint.smAndDown" color="blue" outline small round slot="activator" :href="commit.raw.url"
+						<v-btn :icon="$vuetify.breakpoint.smAndDown" color="blue" outline small round slot="activator"
+							   :href="commit.raw.url"
 							   target="_blank">
 							<v-icon class="hidden-md-and-up">link</v-icon>
 							<strong class="hidden-sm-and-down">
@@ -274,6 +275,9 @@
 				return _.groupBy(this.commits, (commit) => {
 					return moment(commit.raw.committedDate).format('YYYY-MM-DD');
 				});
+			},
+			refreshTimeoutNice: function () {
+				return moment(this.refreshTimeout * 1000).format('mm:ss');
 			}
 		},
 		methods: {

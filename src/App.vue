@@ -15,14 +15,14 @@
 				:clipped-left="$vuetify.breakpoint.lgAndUp"
 				fixed
 		>
-			<v-toolbar-title style="width: 300px" class="ml-0 pl-3" @click="$router.push({path: '/'})">
+			<v-toolbar-title style="width: 300px" class="ml-0 pl-3" @click.stop="$router.push({path: '/'})">
 				<v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
 				<span class="hidden-sm-and-down">
 					Deployments
 				</span>
 			</v-toolbar-title>
 			<v-spacer></v-spacer>
-			<v-btn icon @click="dark=!dark">
+			<v-btn icon @click.stop="dark=!dark">
 				<v-icon :class="{'grey--text': dark}">highlight</v-icon>
 			</v-btn>
 

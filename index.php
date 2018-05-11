@@ -12,6 +12,7 @@
 <script>
 	// noinspection JSAnnotator
 	const APP_ACCESS_TOKEN = <?php echo json_encode($_SERVER['HTTP_X_FORWARDED_ACCESS_TOKEN'] ?? ''); ?>;
+	const APP_ENVIRONMENT = 'production';
 </script>
 <script src="/dist/build.js"></script>
 </body>

@@ -9,9 +9,17 @@ import {ApolloClient} from 'apollo-client'
 import {HttpLink} from 'apollo-link-http'
 import {InMemoryCache} from 'apollo-cache-inmemory'
 import VueApollo from 'vue-apollo'
+import Raven from 'raven-js';
+import RavenVue from 'raven-js/plugins/vue';
 
 Vue.use(VueRouter)
 Vue.use(Vuetify)
+
+Raven
+	.config('https://38403b3775c34bd9a351c74266e19a2d@sentry.io/142396')
+	.setEnvironment(APP_ENVIRONMENT)
+	.addPlugin(RavenVue, Vue)
+	.install();
 
 const httpLink = new HttpLink({
 	uri: 'https://api.github.com/graphql',

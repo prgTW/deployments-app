@@ -82,7 +82,7 @@
 											<v-avatar class="green white--text" v-if="'done' === stage.state">
 												<v-icon>{{ stage.icon }}</v-icon>
 											</v-avatar>
-											<v-avatar class="orange white--text"
+											<v-avatar class="orange white--text pulsating"
 													  v-else-if="'in_progress' === stage.state">
 												<v-icon>{{ stage.icon }}</v-icon>
 											</v-avatar>

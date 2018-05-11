@@ -7,37 +7,35 @@ export const QUERY_COMMITS_HISTORY = gql`
                 history(first: $count) {
                     edges {
                         node {
-                            oid
+#                            oid
                             abbreviatedOid
                             url
                             authoredByCommitter
                             author {
-                                name
                                 avatarUrl
                                 user {
+                                    login
                                     url
                                 }
                             }
                             committer {
-                                name
                                 avatarUrl
                                 user {
+                                    login
                                     url
                                 }
                             }
-                            authoredDate
                             committedDate
-                            additions
-                            deletions
-                            message
-                            messageHeadline
+#                            message
+#                            messageHeadline
                             messageHeadlineHTML
-                            messageBody
-                            messageBodyHTML
+#                            messageBody
+#                            messageBodyHTML
                             status {
                                 contexts {
                                     context
                                     state
+                                    targetUrl
                                 }
                             }
                         }

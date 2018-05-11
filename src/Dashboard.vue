@@ -15,117 +15,127 @@
 			<v-snackbar bottom center multi-line v-model="isLoading" color="info">
 				<strong>Loading</strong>
 			</v-snackbar>
-			<v-list two-line>
-				<template v-for="(commits, date) in commitsByDate">
-					<v-subheader :key="date">
-						<v-icon small>access_time</v-icon>&nbsp;{{ date }}
-					</v-subheader>
-					<template v-for="commit in commits">
-						<v-list-tile avatar ripple>
-							<v-list-tile-avatar>
-								<img :src="commit.raw.author.avatarUrl">
-							</v-list-tile-avatar>
 
-							<v-list-tile-content>
-								<v-list-tile-title>
-									<strong v-html="commit.raw.messageHeadlineHTML"></strong>
-								</v-list-tile-title>
-								<v-list-tile-sub-title>
-									<a :href="commit.raw.author.user.url" target="_blank" class="grey--text">
-										<strong>{{ commit.raw.author.name }}</strong>
-									</a>
-									committed
-									<span :title="commit.raw.committedDate">
-										<RelativeTime :date="commit.raw.committedDate"></RelativeTime>
-									</span>
-								</v-list-tile-sub-title>
-							</v-list-tile-content>
+			<v-list two-line subheader v-for="(commits, date) in commitsByDate">
+				<v-subheader :key="date">
+					<v-icon small>access_time</v-icon>&nbsp;{{ date }}
+				</v-subheader>
+				<v-list-tile avatar ripple v-for="commit in commits">
+					<v-list-tile-avatar>
+						<img :src="commit.raw.author.avatarUrl">
+					</v-list-tile-avatar>
 
-							<v-list-tile-action>
-								<v-btn color="blue" flat small round slot="activator" :href="commit.raw.url" target="_blank">
-									<v-icon class="hidden-md-and-up">link</v-icon>
-									<strong class="hidden-sm-and-down">
-										#{{ commit.raw.abbreviatedOid }}
-									</strong>
-								</v-btn>
-							</v-list-tile-action>
+					<v-list-tile-content>
+						<v-list-tile-title>
+							<strong v-html="commit.raw.messageHeadlineHTML"></strong>
+						</v-list-tile-title>
+						<v-list-tile-sub-title>
+							<a :href="commit.raw.author.user.url"
+							   target="_blank"
+							   v-text="commit.raw.author.user.login"></a>
+							<span v-if="!commit.raw.authoredByCommitter && commit.raw.committer.user">authored and</span>
+							<span v-else>committed</span>
 
-							<v-list-tile-action>
-								<v-avatar
-										size="32"
-										color="green"
-										v-if="isContextSuccessful('ci/circleci', commit.raw.status.contexts)"
-										@click.stop="resetTimer"
+							<span v-if="!commit.raw.authoredByCommitter">
+								<a :href="commit.raw.committer.user.url"
+								   target="_blank"
+								   v-if="commit.raw.committer.user"
+								   v-text="commit.raw.committer.user.login"
+								></a>
+								<span v-if="!commit.raw.authoredByCommitter && commit.raw.committer.user">committed</span>
+							</span>
+
+							<span :title="commit.raw.committedDate">
+								<RelativeTime :date="commit.raw.committedDate"></RelativeTime>
+							</span>
+						</v-list-tile-sub-title>
+					</v-list-tile-content>
+
+					<v-list-tile-action>
+						<v-btn color="blue" flat small round slot="activator" :href="commit.raw.url"
+							   target="_blank">
+							<v-icon class="hidden-md-and-up">link</v-icon>
+							<strong class="hidden-sm-and-down">
+								#{{ commit.raw.abbreviatedOid }}
+							</strong>
+						</v-btn>
+					</v-list-tile-action>
+
+					<v-list-tile-action>
+						<v-avatar
+								size="32"
+								color="green"
+								v-if="isContextSuccessful('ci/circleci', commit.raw.status.contexts)"
+						>
+							<v-icon color="white" size="20">bug_report</v-icon>
+						</v-avatar>
+						<v-avatar
+								size="32"
+								color="orange"
+								class="pulsating"
+								v-else-if="isContextPending('ci/circleci', commit.raw.status.contexts)"
+						>
+							<v-icon size="20" color="white">bug_report</v-icon>
+						</v-avatar>
+						<v-avatar
+								size="32"
+								color="red"
+								v-else-if="isContextFailed('ci/circleci', commit.raw.status.contexts)"
+						>
+							<v-icon size="20" color="white">bug_report</v-icon>
+						</v-avatar>
+						<v-avatar size="32" color="grey lighten-4" v-else>
+							<v-icon color="grey lighten-1" size="20">bug_report</v-icon>
+						</v-avatar>
+					</v-list-tile-action>
+
+					<template v-for="pipeline in commit.pipelines">
+						<v-list-tile-action>
+							<v-chip
+									disabled
+									small
+									:class="{
+										'lighten-3': 'done' !== pipeline.stages.staging.state || 'done' !== pipeline.stages.production.state,
+										'grey grey--text': 'done' !== pipeline.stages.staging.state || 'done' !== pipeline.stages.production.state,
+										'green white--text': 'done' === pipeline.stages.staging.state && 'done' === pipeline.stages.production.state,
+									}"
+							>
+
+								<v-avatar class="green white--text"
+										  v-if="'done' === pipeline.stages.staging.state"
 								>
-									<v-icon color="white" size="20">bug_report</v-icon>
+									<v-icon>{{ pipeline.stages.staging.icon }}</v-icon>
 								</v-avatar>
-								<v-avatar
-										size="32"
-										color="orange"
-										class="pulsating"
-										v-else-if="isContextPending('ci/circleci', commit.raw.status.contexts)"
-								>
-									<v-icon size="20" color="white">bug_report</v-icon>
+								<v-avatar class="orange white--text pulsating"
+										  v-else-if="'in_progress' === pipeline.stages.staging.state">
+									<v-icon>{{ pipeline.stages.staging.icon }}</v-icon>
 								</v-avatar>
-								<v-avatar
-										size="32"
-										color="red"
-										v-else-if="isContextFailed('ci/circleci', commit.raw.status.contexts)"
-								>
-									<v-icon size="20" color="white">bug_report</v-icon>
+								<v-avatar class="grey lighten-3 white--text" v-else>
+									<v-icon color="grey lighten-1">{{ pipeline.stages.staging.icon }}</v-icon>
 								</v-avatar>
-								<v-avatar size="32" color="grey lighten-4" v-else>
-									<v-icon color="grey lighten-1" size="20">bug_report</v-icon>
+
+								<strong>{{ pipeline.name }}</strong>
+
+								<v-avatar class="green white--text"
+										  v-if="'done' === pipeline.stages.production.state"
+										  style="margin-left: 8px; margin-right: -12px;">
+									<v-icon>{{ pipeline.stages.production.icon }}</v-icon>
 								</v-avatar>
-							</v-list-tile-action>
-
-							<template v-for="pipeline in commit.pipelines">
-								<v-list-tile-action>
-									<v-chip
-											disabled
-											small
-											:class="{
-												'lighten-3': 'done' !== pipeline.stages.staging.state || 'done' !== pipeline.stages.production.state,
-												'grey grey--text': 'done' !== pipeline.stages.staging.state || 'done' !== pipeline.stages.production.state,
-												'green white--text': 'done' === pipeline.stages.staging.state && 'done' === pipeline.stages.production.state,
-											}"
-									>
-
-										<v-avatar class="green white--text"
-												  v-if="'done' === pipeline.stages.staging.state">
-											<v-icon>{{ pipeline.stages.staging.icon }}</v-icon>
-										</v-avatar>
-										<v-avatar class="orange white--text pulsating"
-												  v-else-if="'in_progress' === pipeline.stages.staging.state">
-											<v-icon>{{ pipeline.stages.staging.icon }}</v-icon>
-										</v-avatar>
-										<v-avatar class="grey lighten-3 white--text" v-else>
-											<v-icon color="grey lighten-1">{{ pipeline.stages.staging.icon }}</v-icon>
-										</v-avatar>
-
-										<strong>{{ pipeline.name }}</strong>
-
-										<v-avatar class="green white--text"
-												  v-if="'done' === pipeline.stages.production.state"
-												  style="margin-left: 8px; margin-right: -12px;">
-											<v-icon>{{ pipeline.stages.production.icon }}</v-icon>
-										</v-avatar>
-										<v-avatar class="orange white--text pulsating"
-												  v-else-if="'in_progress' === pipeline.stages.production.state"
-												  style="margin-left: 8px; margin-right: -12px;">
-											<v-icon>{{ pipeline.stages.production.icon }}</v-icon>
-										</v-avatar>
-										<v-avatar class="grey lighten-3 white--text" v-else
-												  style="margin-left: 8px; margin-right: -12px;">
-											<v-icon color="grey lighten-1">{{ pipeline.stages.production.icon }}
-											</v-icon>
-										</v-avatar>
-									</v-chip>
-								</v-list-tile-action>
-							</template>
-						</v-list-tile>
+								<v-avatar class="orange white--text pulsating"
+										  v-else-if="'in_progress' === pipeline.stages.production.state"
+										  style="margin-left: 8px; margin-right: -12px;">
+									<v-icon>{{ pipeline.stages.production.icon }}</v-icon>
+								</v-avatar>
+								<v-avatar class="grey lighten-3 white--text" v-else
+										  style="margin-left: 8px; margin-right: -12px;">
+									<v-icon color="grey lighten-1">{{ pipeline.stages.production.icon }}
+									</v-icon>
+								</v-avatar>
+							</v-chip>
+						</v-list-tile-action>
 					</template>
-				</template>
+				</v-list-tile>
+				<v-divider></v-divider>
 			</v-list>
 		</v-flex>
 	</v-layout>
@@ -147,14 +157,11 @@
 						owner: this.$route.params.owner,
 						name: this.$route.params.repo,
 						qualifiedName: 'refs/heads/develop',
-						count: 25,
+						count: 50,
 					}
 				},
 				result(result) {
 					let vm = this
-
-					vm.isLoading = false
-
 					let pipelines = [
 						{
 							name: "K1",
@@ -187,7 +194,6 @@
 							},
 						},
 					];
-
 					let commits2 = _.cloneDeep(result.data.repository.ref.target.history.edges)
 
 					vm.commits = _.map(commits2, (commit) => {
@@ -233,11 +239,25 @@
 							pipelines: _.cloneDeep(pipelines)
 						}
 					})
+
+					vm.isLoading = false
+					this.resetTimer()
 				},
 				error() {
-					this.isLoading = false
 					this.commits = []
+					this.isLoading = false
 				},
+				finally() {
+					let pulsatingElements = document.querySelectorAll('.pulsating');
+					_.forEach(pulsatingElements, (elem) => {
+						elem.classList.remove('pulsating')
+					})
+					setTimeout(() => {
+						_.forEach(pulsatingElements, (elem) => {
+							elem.classList.add('pulsating')
+						})
+					}, 1)
+				}
 			},
 		},
 		components: {RelativeTime},
@@ -246,6 +266,7 @@
 			refreshInterval: 180,
 			refreshTimeout: 60,
 			refreshIntervalHandle: undefined,
+			showOnlyMyCommits: false,
 			commits: [],
 		}),
 		computed: {
@@ -258,17 +279,7 @@
 		methods: {
 			fetchCommits: function () {
 				this.isLoading = true
-				this.$apollo.queries.commits.refetch().finally(this.resetTimer).finally(() => {
-					let pulsatingElements = document.querySelectorAll('.pulsating');
-					_.forEach(pulsatingElements, (elem) => {
-						elem.classList.remove('pulsating')
-					})
-					setTimeout(() => {
-						_.forEach(pulsatingElements, (elem) => {
-							elem.classList.add('pulsating')
-						})
-					}, 1)
-				});
+				this.$apollo.queries.commits.refetch()
 			},
 			resetTimer: function (queueNext = true) {
 				if (this.refreshIntervalHandle) {

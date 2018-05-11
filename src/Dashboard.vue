@@ -1,7 +1,18 @@
 <template>
 	<v-layout row justify-center>
 		<v-flex xs12 sm10 md10>
-			<v-snackbar bottom right multi-line v-model="isLoading" color="info">
+			<v-btn
+					fab
+					bottom
+					right
+					fixed
+					color="primary"
+					:loading="isLoading"
+					@click.stop="fetchCommits"
+			>
+				{{ refreshTimeout }}
+			</v-btn>
+			<v-snackbar bottom center multi-line v-model="isLoading" color="info">
 				<strong>Loading</strong>
 			</v-snackbar>
 			<v-list two-line>
@@ -229,12 +240,12 @@
 		components: {RelativeTime},
 		data: () => ({
 			isLoading: true,
+			refreshInterval: 180,
+			refreshTimeout: 60,
+			refreshIntervalHandle: undefined,
 			commits: [],
 		}),
 		computed: {
-			today: function () {
-				return moment().format('YYYY-MM-DD');
-			},
 			commitsByDate: function () {
 				return _.groupBy(this.commits, (commit) => {
 					return moment(commit.raw.committedDate).format('YYYY-MM-DD');
@@ -244,7 +255,23 @@
 		methods: {
 			fetchCommits: function () {
 				this.isLoading = true
-				this.$apollo.queries.commits.refetch()
+				this.$apollo.queries.commits.refetch().finally(this.resetTimer);
+			},
+			resetTimer: function (queueNext = true) {
+				if (this.refreshIntervalHandle) {
+					clearInterval(this.refreshIntervalHandle);
+				}
+				if (!queueNext) {
+					return;
+				}
+				this.refreshTimeout = this.refreshInterval;
+				this.refreshIntervalHandle = setInterval(() => {
+					--this.refreshTimeout;
+					if (this.refreshTimeout <= 0) {
+						this.resetTimer(false)
+						this.fetchCommits()
+					}
+				}, 1000);
 			},
 			isContextPending: function (context, contexts) {
 				return _.some(contexts, function (ctx) {
@@ -264,6 +291,9 @@
 		},
 		mounted: function () {
 			this.fetchCommits()
+		},
+		beforeDestroy: function () {
+			this.resetTimer(false)
 		}
 	}
 </script>

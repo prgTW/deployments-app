@@ -12,7 +12,7 @@
 			>
 				{{ refreshTimeoutNice }}
 			</v-btn>
-			<v-snackbar bottom center multi-line v-model="isLoading" color="info">
+			<v-snackbar bottom center v-model="isLoading" color="info">
 				<strong>Loading</strong>
 			</v-snackbar>
 

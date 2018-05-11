@@ -270,7 +270,7 @@
 		data: () => ({
 			isLoading: true,
 			refreshInterval: 180,
-			refreshTimeout: 60,
+			refreshTimeout: 180,
 			refreshIntervalHandle: undefined,
 			showOnlyMyCommits: false,
 			commits: [],

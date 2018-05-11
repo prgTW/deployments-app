@@ -1,6 +1,6 @@
 <template>
 	<v-layout row justify-center>
-		<v-flex xs12 sm10 md10>
+		<v-flex xs12 md10>
 			<v-btn
 					fab
 					bottom
@@ -31,7 +31,7 @@
 									<strong v-html="commit.raw.messageHeadlineHTML"></strong>
 								</v-list-tile-title>
 								<v-list-tile-sub-title>
-									<a :href="commit.raw.author.url">
+									<a :href="commit.raw.author.user.url" target="_blank" class="grey--text">
 										<strong>{{ commit.raw.author.name }}</strong>
 									</a>
 									committed
@@ -42,7 +42,7 @@
 							</v-list-tile-content>
 
 							<v-list-tile-action>
-								<v-btn color="blue" flat small round slot="activator" :href="commit.raw.url">
+								<v-btn color="blue" flat small round slot="activator" :href="commit.raw.url" target="_blank">
 									<v-icon class="hidden-md-and-up">link</v-icon>
 									<strong class="hidden-sm-and-down">
 										#{{ commit.raw.abbreviatedOid }}
@@ -55,6 +55,7 @@
 										size="32"
 										color="green"
 										v-if="isContextSuccessful('ci/circleci', commit.raw.status.contexts)"
+										@click.stop="resetTimer"
 								>
 									<v-icon color="white" size="20">bug_report</v-icon>
 								</v-avatar>
@@ -84,24 +85,41 @@
 											disabled
 											small
 											:class="{
-												'lighten-3': true,
+												'lighten-3': 'done' !== pipeline.stages.staging.state || 'done' !== pipeline.stages.production.state,
 												'grey grey--text': 'done' !== pipeline.stages.staging.state || 'done' !== pipeline.stages.production.state,
 												'green white--text': 'done' === pipeline.stages.staging.state && 'done' === pipeline.stages.production.state,
 											}"
 									>
-										<template v-for="stage in pipeline.stages">
-											<v-avatar class="green white--text" v-if="'done' === stage.state">
-												<v-icon>{{ stage.icon }}</v-icon>
-											</v-avatar>
-											<v-avatar class="orange white--text pulsating"
-													  v-else-if="'in_progress' === stage.state">
-												<v-icon>{{ stage.icon }}</v-icon>
-											</v-avatar>
-											<v-avatar class="grey lighten-3 white--text" v-else>
-												<v-icon color="grey lighten-1">{{ stage.icon }}</v-icon>
-											</v-avatar>
-										</template>
+
+										<v-avatar class="green white--text"
+												  v-if="'done' === pipeline.stages.staging.state">
+											<v-icon>{{ pipeline.stages.staging.icon }}</v-icon>
+										</v-avatar>
+										<v-avatar class="orange white--text pulsating"
+												  v-else-if="'in_progress' === pipeline.stages.staging.state">
+											<v-icon>{{ pipeline.stages.staging.icon }}</v-icon>
+										</v-avatar>
+										<v-avatar class="grey lighten-3 white--text" v-else>
+											<v-icon color="grey lighten-1">{{ pipeline.stages.staging.icon }}</v-icon>
+										</v-avatar>
+
 										<strong>{{ pipeline.name }}</strong>
+
+										<v-avatar class="green white--text"
+												  v-if="'done' === pipeline.stages.production.state"
+												  style="margin-left: 8px; margin-right: -12px;">
+											<v-icon>{{ pipeline.stages.production.icon }}</v-icon>
+										</v-avatar>
+										<v-avatar class="orange white--text pulsating"
+												  v-else-if="'in_progress' === pipeline.stages.production.state"
+												  style="margin-left: 8px; margin-right: -12px;">
+											<v-icon>{{ pipeline.stages.production.icon }}</v-icon>
+										</v-avatar>
+										<v-avatar class="grey lighten-3 white--text" v-else
+												  style="margin-left: 8px; margin-right: -12px;">
+											<v-icon color="grey lighten-1">{{ pipeline.stages.production.icon }}
+											</v-icon>
+										</v-avatar>
 									</v-chip>
 								</v-list-tile-action>
 							</template>
@@ -138,21 +156,6 @@
 					vm.isLoading = false
 
 					let pipelines = [
-						// {
-						// 	name: "OLD",
-						// 	stages: {
-						// 		staging: {
-						// 			icon: "business",
-						// 			context: "old-staging",
-						// 			state: undefined
-						// 		},
-						// 		production: {
-						// 			icon: "public",
-						// 			context: "old-production",
-						// 			state: undefined
-						// 		},
-						// 	},
-						// },
 						{
 							name: "K1",
 							stages: {
@@ -255,7 +258,17 @@
 		methods: {
 			fetchCommits: function () {
 				this.isLoading = true
-				this.$apollo.queries.commits.refetch().finally(this.resetTimer);
+				this.$apollo.queries.commits.refetch().finally(this.resetTimer).finally(() => {
+					let pulsatingElements = document.querySelectorAll('.pulsating');
+					_.forEach(pulsatingElements, (elem) => {
+						elem.classList.remove('pulsating')
+					})
+					setTimeout(() => {
+						_.forEach(pulsatingElements, (elem) => {
+							elem.classList.add('pulsating')
+						})
+					}, 1)
+				});
 			},
 			resetTimer: function (queueNext = true) {
 				if (this.refreshIntervalHandle) {
@@ -316,10 +329,10 @@
 			-webkit-transform: scale(0.8);
 		}
 		50% {
-			-webkit-transform: scale(1);
+			-webkit-transform: scale(1.2);
 		}
 		75% {
-			-webkit-transform: scale(0.8);
+			-webkit-transform: scale(1.2);
 		}
 		100% {
 			-webkit-transform: scale(0.8);

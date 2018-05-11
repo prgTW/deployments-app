@@ -28,7 +28,8 @@
     "vue": "^2.5.11",
     "vue-apollo": "^2.1.0-rc.8",
     "vue-router": "^3.0.1",
-    "vuetify": "^1.0.17"
+    "vuetify": "^1.0.17",
+    "vuex": "^3.0.1"
   },
   "browserslist": [
     "> 1%",

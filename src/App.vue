@@ -49,45 +49,6 @@
 			dialog: false,
 			drawer: null,
 			dark: false,
-			items: [
-				{
-					icon: 'keyboard_arrow_up',
-					'icon-alt': 'keyboard_arrow_down',
-					text: 'Buddy',
-					model: true,
-					children: [
-						{icon: 'link', owner: 'DocPlanner', repo:'booking-front-app'},
-						{icon: 'link', owner: 'DocPlanner', repo:'brag-app'},
-						{icon: 'link', owner: 'DocPlanner', repo:'crm-app'},
-						{icon: 'link', owner: 'DocPlanner', repo:'dashboard-app'},
-						{icon: 'link', owner: 'DocPlanner', repo:'dp-icons'},
-						{icon: 'link', owner: 'DocPlanner', repo:'dp-ui-kit'},
-						{icon: 'link', owner: 'DocPlanner', repo:'fetcher-app'},
-						{icon: 'link', owner: 'DocPlanner', repo:'hubspot-mirroring-app'},
-						{icon: 'link', owner: 'DocPlanner', repo:'integrations-app'},
-						{icon: 'link', owner: 'DocPlanner', repo:'logger-app'},
-						{icon: 'link', owner: 'DocPlanner', repo:'monolith-app'},
-						{icon: 'link', owner: 'DocPlanner', repo:'mydentista'},
-						{icon: 'link', owner: 'DocPlanner', repo:'opinion-moderation-app'},
-						{icon: 'link', owner: 'DocPlanner', repo:'opinions-app'},
-						{icon: 'link', owner: 'DocPlanner', repo:'payments-app'},
-						{icon: 'link', owner: 'DocPlanner', repo:'reservation-app'},
-						{icon: 'link', owner: 'DocPlanner', repo:'sso-app'},
-						{icon: 'link', owner: 'DocPlanner', repo:'voicemail-app'},
-						{icon: 'link', owner: 'DocPlanner', repo:'websites-app'},
-					]
-				},
-				{
-					icon: 'keyboard_arrow_up',
-					'icon-alt': 'keyboard_arrow_down',
-					text: 'Old deployment',
-					model: true,
-					children: [
-						{icon: 'link', owner: 'DocPlanner', repo: 'metrix-app'},
-						{icon: 'link', owner: 'DocPlanner', repo: 'deployments-app'},
-					]
-				},
-			]
 		}),
 		props: {
 			source: String

@@ -14,22 +14,19 @@
 			viewer: {
 				fetchPolicy: 'no-cache',
 				query: QUERY_VIEWER,
-				result: function (result) {
+				result: function () {
 					this.isError = false
 					this.isLoading = false
-					this.viewer = result.data.viewer
 				},
 				error: function () {
 					this.isError = true
 					this.isLoading = false
-					this.viewer = null
 				},
 			},
 		},
 		data: () => ({
 			isError: false,
 			isLoading: true,
-			viewer: null
 		}),
 		computed: {
 			avatarUrl: function () {

@@ -63,3 +63,26 @@ export const QUERY_VIEWER = gql`
         }
     }
 `;
+
+export const QUERY_ORGANISATION_REPOSITORIES = gql`
+    query ($owner: String!) {
+        organization(login: $owner) {
+            login
+            avatarUrl
+            repositories(first: 100, affiliations: [COLLABORATOR, ORGANIZATION_MEMBER], orderBy: {field: NAME, direction: ASC}) {
+                edges {
+                    node {
+                        owner {
+                            login
+                        }
+                        name
+                        defaultBranchRef {
+                            prefix
+                            name
+                        }
+                    }
+                }
+            }
+        }
+    }
+`;

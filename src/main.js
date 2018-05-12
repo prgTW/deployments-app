@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import Vuex from 'vuex'
 import Vuetify from 'vuetify'
 import 'babel-polyfill'
 import App from './App.vue'
@@ -13,6 +14,7 @@ import Raven from 'raven-js';
 import RavenVue from 'raven-js/plugins/vue';
 
 Vue.use(VueRouter)
+Vue.use(Vuex)
 Vue.use(Vuetify)
 
 Raven

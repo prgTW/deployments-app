@@ -16,11 +16,11 @@
 				<strong>Loading</strong>
 			</v-snackbar>
 
-			<v-list two-line subheader v-for="(commits, date) in commitsByDate">
+			<v-list two-line subheader v-for="(commits, date) in commitsByDate" :key="date">
 				<v-subheader :key="date">
 					<v-icon small>access_time</v-icon>&nbsp;{{ date }}
 				</v-subheader>
-				<v-list-tile avatar ripple v-for="commit in commits">
+				<v-list-tile avatar ripple v-for="(commit, key) in commits" :key="key">
 					<v-list-tile-avatar>
 						<img :src="commit.raw.author.avatarUrl">
 					</v-list-tile-avatar>

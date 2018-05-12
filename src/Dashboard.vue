@@ -112,6 +112,10 @@
 								>
 									<v-icon>{{ pipeline.stages.staging.icon }}</v-icon>
 								</v-avatar>
+								<v-avatar class="red white--text"
+										  v-else-if="'error' === pipeline.stages.staging.state">
+									<v-icon>{{ pipeline.stages.staging.icon }}</v-icon>
+								</v-avatar>
 								<v-avatar class="orange white--text pulsating"
 										  v-else-if="'in_progress' === pipeline.stages.staging.state">
 									<v-icon>{{ pipeline.stages.staging.icon }}</v-icon>
@@ -124,6 +128,11 @@
 
 								<v-avatar class="green white--text"
 										  v-if="'done' === pipeline.stages.production.state"
+										  style="margin-left: 8px; margin-right: -12px;">
+									<v-icon>{{ pipeline.stages.production.icon }}</v-icon>
+								</v-avatar>
+								<v-avatar class="red white--text"
+										  v-else-if="'error' === pipeline.stages.production.state"
 										  style="margin-left: 8px; margin-right: -12px;">
 									<v-icon>{{ pipeline.stages.production.icon }}</v-icon>
 								</v-avatar>
@@ -219,16 +228,6 @@
 
 								if (undefined === currentContext) {
 									return;
-								}
-
-								if ('in_progress' === stage.state) {
-									pipelines[pIdx].stages[sIdx].state = {
-										FAILURE: "error",
-										ERROR: "error",
-										PENDING: "in_progress",
-										SUCCESS: "done",
-									}[currentContext.state || ''];
-									return
 								}
 
 								pipelines[pIdx].stages[sIdx].state = {

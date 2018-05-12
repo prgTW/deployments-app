@@ -164,7 +164,7 @@
 
 	export default {
 		apollo: {
-			commits: {
+			repository: {
 				fetchPolicy: 'no-cache',
 				query: QUERY_COMMITS_HISTORY,
 				variables() {
@@ -175,84 +175,12 @@
 						count: 50,
 					}
 				},
-				result(result) {
-					let vm = this
-					let pipelines = [
-						{
-							name: "K1",
-							stages: {
-								staging: {
-									icon: "business",
-									context: "buddy/pipeline/staging-k1",
-									state: undefined
-								},
-								production: {
-									icon: "public",
-									context: "buddy/pipeline/production-k1",
-									state: undefined
-								},
-							},
-						},
-						{
-							name: "K2",
-							stages: {
-								staging: {
-									icon: "business",
-									context: "buddy/pipeline/staging-k2",
-									state: undefined
-								},
-								production: {
-									icon: "public",
-									context: "buddy/pipeline/production-k2",
-									state: undefined
-								},
-							},
-						},
-					];
-					let commits2 = _.cloneDeep(result.data.repository.ref.target.history.edges)
-
-					vm.commits = _.map(commits2, (commit) => {
-						_.forEach(pipelines, (pipeline, pIdx) => {
-							_.forEach(pipeline.stages, (stage, sIdx) => {
-								if ('done' === stage.state) {
-									return
-								}
-
-								const currentContext = _
-									.chain(commit.node.status.contexts || [])
-									.filter((status) => {
-										return status.context === stage.context
-									})
-									.first()
-									.value()
-
-								if (undefined === currentContext) {
-									return;
-								}
-
-								pipelines[pIdx].stages[sIdx].state = {
-									FAILURE: "error",
-									ERROR: "error",
-									PENDING: "in_progress",
-									SUCCESS: "done",
-								}[currentContext.state || ''];
-							})
-						});
-
-						return {
-							raw: commit.node,
-							pipelines: _.cloneDeep(pipelines)
-						}
-					})
-
-					vm.isLoading = false
+				result() {
+					this.isLoading = false
 					this.resetTimer()
 				},
-				error() {
-					this.commits = []
-					this.isLoading = false
-				},
 				finally() {
+					this.isLoading = false
 					let pulsatingElements = document.querySelectorAll('.pulsating');
 					_.forEach(pulsatingElements, (elem) => {
 						elem.classList.remove('pulsating')
@@ -272,13 +200,78 @@
 			refreshTimeout: 180,
 			refreshIntervalHandle: undefined,
 			showOnlyMyCommits: false,
-			commits: [],
 		}),
 		computed: {
 			commitsByDate: function () {
-				return _.groupBy(this.commits, (commit) => {
-					return moment(commit.raw.committedDate).format('YYYY-MM-DD');
-				});
+				let pipelines = [
+					{
+						name: "K1",
+						stages: {
+							staging: {
+								icon: "business",
+								context: "buddy/pipeline/staging-k1",
+								state: undefined
+							},
+							production: {
+								icon: "public",
+								context: "buddy/pipeline/production-k1",
+								state: undefined
+							},
+						},
+					},
+					{
+						name: "K2",
+						stages: {
+							staging: {
+								icon: "business",
+								context: "buddy/pipeline/staging-k2",
+								state: undefined
+							},
+							production: {
+								icon: "public",
+								context: "buddy/pipeline/production-k2",
+								state: undefined
+							},
+						},
+					},
+				];
+				let clonedCommits = _.cloneDeep(this.repository.ref.target.history.edges)
+
+				let commits = _.map(clonedCommits, (commit) => {
+					_.forEach(pipelines, (pipeline, pIdx) => {
+						_.forEach(pipeline.stages, (stage, sIdx) => {
+							if ('done' === stage.state) {
+								return
+							}
+
+							const currentContext = _
+								.chain(commit.node.status.contexts || [])
+								.filter((status) => {
+									return status.context === stage.context
+								})
+								.first()
+								.value()
+
+							if (undefined === currentContext) {
+								return;
+							}
+
+							pipelines[pIdx].stages[sIdx].state = {
+								FAILURE: "error",
+								ERROR: "error",
+								PENDING: "in_progress",
+								SUCCESS: "done",
+							}[currentContext.state || ''];
+						})
+					});
+
+					return {
+						raw: commit.node,
+						pipelines: _.cloneDeep(pipelines)
+					}
+				})
+
+				return _.groupBy(commits, commit => moment(commit.raw.committedDate).format('YYYY-MM-DD'));
 			},
 			refreshTimeoutNice: function () {
 				return moment(this.refreshTimeout * 1000).format('mm:ss');
@@ -287,7 +280,7 @@
 		methods: {
 			fetchCommits: function () {
 				this.isLoading = true
-				this.$apollo.queries.commits.refetch()
+				this.$apollo.queries.repository.refetch()
 			},
 			resetTimer: function (queueNext = true) {
 				if (this.refreshIntervalHandle) {

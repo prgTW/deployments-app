@@ -69,16 +69,27 @@
 
 					<v-list-tile-action class="mr-3">
 						<template v-if="commit.raw.status">
-							<v-btn icon small color="green" :href="getContextTargetUrl('ci/circleci', commit.raw.status.contexts || [])" target="_blank" v-if="isContextSuccessful('ci/circleci', commit.raw.status.contexts || [])">
+							<v-btn icon small color="green"
+								   :href="getContextTargetUrl('ci/circleci', commit.raw.status.contexts || [])"
+								   target="_blank"
+								   v-if="isContextSuccessful('ci/circleci', commit.raw.status.contexts || [])">
 								<v-icon color="white" size="18">bug_report</v-icon>
 							</v-btn>
-							<v-btn icon small color="orange" class="pulsating" :href="getContextTargetUrl('ci/circleci', commit.raw.status.contexts || [])" target="_blank" v-else-if="isContextPending('ci/circleci', commit.raw.status.contexts || [])">
+							<v-btn icon small color="orange" class="pulsating"
+								   :href="getContextTargetUrl('ci/circleci', commit.raw.status.contexts || [])"
+								   target="_blank"
+								   v-else-if="isContextPending('ci/circleci', commit.raw.status.contexts || [])">
 								<v-icon color="white" size="18">bug_report</v-icon>
 							</v-btn>
-							<v-btn icon small color="red" :href="getContextTargetUrl('ci/circleci', commit.raw.status.contexts || [])" target="_blank" v-else-if="isContextFailed('ci/circleci', commit.raw.status.contexts || [])">
+							<v-btn icon small color="red"
+								   :href="getContextTargetUrl('ci/circleci', commit.raw.status.contexts || [])"
+								   target="_blank"
+								   v-else-if="isContextFailed('ci/circleci', commit.raw.status.contexts || [])">
 								<v-icon color="white" size="18">bug_report</v-icon>
 							</v-btn>
-							<v-btn icon small color="grey lighten-3" :href="getContextTargetUrl('ci/circleci', commit.raw.status.contexts || [])" target="_blank" v-else>
+							<v-btn icon small color="grey lighten-3"
+								   :href="getContextTargetUrl('ci/circleci', commit.raw.status.contexts || [])"
+								   target="_blank" v-else>
 								<v-icon color="grey lighten-1" size="18">bug_report</v-icon>
 							</v-btn>
 						</template>
@@ -168,18 +179,12 @@
 				result() {
 					this.isLoading = false
 					this.resetTimer()
+					this.resetAnimation()
 				},
-				finally() {
+				error() {
 					this.isLoading = false
-					let pulsatingElements = document.querySelectorAll('.pulsating');
-					_.forEach(pulsatingElements, (elem) => {
-						elem.classList.remove('pulsating')
-					})
-					setTimeout(() => {
-						_.forEach(pulsatingElements, (elem) => {
-							elem.classList.add('pulsating')
-						})
-					}, 1)
+					this.resetTimer()
+					this.resetAnimation()
 				}
 			},
 		},
@@ -235,7 +240,7 @@
 							}
 
 							const currentContext = _
-								.chain(commit.node.status.contexts || [])
+								.chain(commit.node.status ? (commit.node.status.contexts || []) : [])
 								.filter((status) => {
 									return status.context === stage.context
 								})
@@ -287,6 +292,17 @@
 						this.fetchCommits()
 					}
 				}, 1000);
+			},
+			resetAnimation: function () {
+				let pulsatingElements = document.querySelectorAll('.pulsating');
+				_.forEach(pulsatingElements, (elem) => {
+					elem.classList.remove('pulsating')
+				})
+				setTimeout(() => {
+					_.forEach(pulsatingElements, (elem) => {
+						elem.classList.add('pulsating')
+					})
+				}, 1)
 			},
 			isContextPending: function (context, contexts) {
 				return _.some(contexts, function (ctx) {

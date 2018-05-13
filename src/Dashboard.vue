@@ -67,32 +67,22 @@
 						</v-btn>
 					</v-list-tile-action>
 
-					<v-list-tile-action>
-						<v-avatar
-								size="32"
-								color="green"
-								v-if="isContextSuccessful('ci/circleci', commit.raw.status.contexts)"
-						>
-							<v-icon color="white" size="20">bug_report</v-icon>
-						</v-avatar>
-						<v-avatar
-								size="32"
-								color="orange"
-								class="pulsating"
-								v-else-if="isContextPending('ci/circleci', commit.raw.status.contexts)"
-						>
-							<v-icon size="20" color="white">bug_report</v-icon>
-						</v-avatar>
-						<v-avatar
-								size="32"
-								color="red"
-								v-else-if="isContextFailed('ci/circleci', commit.raw.status.contexts)"
-						>
-							<v-icon size="20" color="white">bug_report</v-icon>
-						</v-avatar>
-						<v-avatar size="32" color="grey lighten-4" v-else>
-							<v-icon color="grey lighten-1" size="20">bug_report</v-icon>
-						</v-avatar>
+					<v-list-tile-action class="mr-3">
+						<template v-if="commit.raw.status">
+							<v-btn icon small color="green" :href="getContextTargetUrl('ci/circleci', commit.raw.status.contexts || [])" target="_blank" v-if="isContextSuccessful('ci/circleci', commit.raw.status.contexts || [])">
+								<v-icon color="white" size="18">bug_report</v-icon>
+							</v-btn>
+							<v-btn icon small color="orange" class="pulsating" :href="getContextTargetUrl('ci/circleci', commit.raw.status.contexts || [])" target="_blank" v-else-if="isContextPending('ci/circleci', commit.raw.status.contexts || [])">
+								<v-icon color="white" size="18">bug_report</v-icon>
+							</v-btn>
+							<v-btn icon small color="red" :href="getContextTargetUrl('ci/circleci', commit.raw.status.contexts || [])" target="_blank" v-else-if="isContextFailed('ci/circleci', commit.raw.status.contexts || [])">
+								<v-icon color="white" size="18">bug_report</v-icon>
+							</v-btn>
+							<v-btn icon small color="grey lighten-3" :href="getContextTargetUrl('ci/circleci', commit.raw.status.contexts || [])" target="_blank" v-else>
+								<v-icon color="grey lighten-1" size="18">bug_report</v-icon>
+							</v-btn>
+						</template>
+						<v-icon color="grey lighten-1" size="18" v-else>not_interested</v-icon>
 					</v-list-tile-action>
 
 					<template v-for="pipeline in commit.pipelines">
@@ -312,7 +302,10 @@
 				return _.some(contexts, function (ctx) {
 					return ctx.context === context && "SUCCESS" === ctx.state
 				})
-			}
+			},
+			getContextTargetUrl: function (context, contexts) {
+				return _.chain(contexts).filter(ctx => ctx.context === context).first().value().targetUrl;
+			},
 		},
 		mounted: function () {
 			this.fetchCommits()

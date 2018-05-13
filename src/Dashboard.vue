@@ -176,7 +176,9 @@
 						count: 50,
 					}
 				},
-				result() {
+				result(result) {
+					this.history = result.data.repository.ref.target.history.edges
+					this.hasNexPage = result.data.repository.ref.target.history.pageInfo.hasNextPage
 					this.isLoading = false
 					this.resetTimer()
 					this.resetAnimation()
@@ -190,11 +192,12 @@
 		},
 		components: {RelativeTime},
 		data: () => ({
+			history: [],
+			hasNexPage: false,
 			isLoading: true,
 			refreshInterval: 180,
 			refreshTimeout: 180,
 			refreshIntervalHandle: undefined,
-			showOnlyMyCommits: false,
 		}),
 		computed: {
 			commitsByDate: function () {
@@ -230,7 +233,7 @@
 						},
 					},
 				];
-				let clonedCommits = _.cloneDeep(this.repository.ref.target.history.edges)
+				let clonedCommits = _.cloneDeep(this.history)
 
 				let commits = _.map(clonedCommits, (commit) => {
 					_.forEach(pipelines, (pipeline, pIdx) => {

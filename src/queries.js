@@ -5,9 +5,12 @@ export const QUERY_COMMITS_HISTORY = gql`
         target {
             ... on Commit {
                 history(first: $count) {
+                    pageInfo {
+                        hasNextPage
+                    }
                     edges {
+                        cursor
                         node {
-#                            oid
                             abbreviatedOid
                             url
                             authoredByCommitter
@@ -26,11 +29,7 @@ export const QUERY_COMMITS_HISTORY = gql`
                                 }
                             }
                             committedDate
-#                            message
-#                            messageHeadline
                             messageHeadlineHTML
-#                            messageBody
-#                            messageBodyHTML
                             status {
                                 contexts {
                                     context

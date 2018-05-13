@@ -68,7 +68,7 @@
 					</v-list-tile-action>
 
 					<v-list-tile-action class="mr-3">
-						<template v-if="commit.raw.status">
+						<template v-if="commit.raw.status && hasContext('ci/circleci', commit.raw.status.contexts || [])">
 							<v-btn icon small color="green"
 								   :href="getContextTargetUrl('ci/circleci', commit.raw.status.contexts || [])"
 								   target="_blank"
@@ -320,6 +320,11 @@
 			isContextSuccessful: function (context, contexts) {
 				return _.some(contexts, function (ctx) {
 					return ctx.context === context && "SUCCESS" === ctx.state
+				})
+			},
+			hasContext: function(context, contexts) {
+				return _.some(contexts, function (ctx) {
+					return ctx.context === context
 				})
 			},
 			getContextTargetUrl: function (context, contexts) {

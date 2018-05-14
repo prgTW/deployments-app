@@ -17,11 +17,13 @@ Vue.use(VueRouter)
 Vue.use(Vuex)
 Vue.use(Vuetify)
 
-Raven
-	.config('https://38403b3775c34bd9a351c74266e19a2d@sentry.io/142396')
-	.setEnvironment(APP_ENVIRONMENT)
-	.addPlugin(RavenVue, Vue)
-	.install();
+if ('production' === APP_ENVIRONMENT) {
+	Raven
+		.config('https://38403b3775c34bd9a351c74266e19a2d@sentry.io/142396')
+		.setEnvironment(APP_ENVIRONMENT)
+		.addPlugin(RavenVue, Vue)
+		.install();
+}
 
 const httpLink = new HttpLink({
 	uri: 'https://api.github.com/graphql',

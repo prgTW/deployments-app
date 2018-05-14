@@ -34,11 +34,7 @@
 							   target="_blank"
 							   class="grey--text"
 							   v-if="commit.raw.author.user && commit.raw.author.user.login"
-							>
-								<strong>
-									{{ commit.raw.author.user.login }}
-								</strong>
-							</a>
+							><strong>{{ commit.raw.author.user.login }}</strong></a>
 							<strong v-else class="grey--text">
 								{{ commit.raw.author.name }}
 							</strong>
@@ -50,11 +46,7 @@
 								   target="_blank"
 								   class="grey--text"
 								   v-if="commit.raw.committer.user && commit.raw.committer.user.login"
-								>
-									<strong>
-										{{ commit.raw.committer.user.login }}
-									</strong>
-								</a>
+								><strong>{{ commit.raw.committer.user.login }}</strong></a>
 								<strong v-else class="grey--text">
 									{{ commit.raw.committer.name }}
 								</strong>

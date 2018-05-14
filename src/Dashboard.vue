@@ -88,7 +88,7 @@
 							<v-btn icon
 								   :small="$vuetify.breakpoint.lgAndDown"
 								   color="green"
-								   :href="getContextTargetUrl('ci/circleci', commit.raw.status.contexts || [])"
+								   :href="commit|contextTargetUrl('ci/circleci')"
 								   target="_blank"
 								   v-if="isContextSuccessful('ci/circleci', commit.raw.status.contexts || [])">
 								<v-icon color="white" size="18">bug_report</v-icon>
@@ -96,7 +96,7 @@
 							<v-btn icon
 								   :small="$vuetify.breakpoint.lgAndDown"
 								   color="orange" class="pulsating"
-								   :href="getContextTargetUrl('ci/circleci', commit.raw.status.contexts || [])"
+								   :href="commit|contextTargetUrl('ci/circleci')"
 								   target="_blank"
 								   v-else-if="isContextPending('ci/circleci', commit.raw.status.contexts || [])">
 								<v-icon color="white" size="18">bug_report</v-icon>
@@ -104,7 +104,7 @@
 							<v-btn icon
 								   :small="$vuetify.breakpoint.lgAndDown"
 								   color="red"
-								   :href="getContextTargetUrl('ci/circleci', commit.raw.status.contexts || [])"
+								   :href="commit|contextTargetUrl('ci/circleci')"
 								   target="_blank"
 								   v-else-if="isContextFailed('ci/circleci', commit.raw.status.contexts || [])">
 								<v-icon color="white" size="18">bug_report</v-icon>
@@ -112,7 +112,7 @@
 							<v-btn icon
 								   :small="$vuetify.breakpoint.lgAndDown"
 								   color="grey lighten-3"
-								   :href="getContextTargetUrl('ci/circleci', commit.raw.status.contexts || [])"
+								   :href="commit|contextTargetUrl('ci/circleci')"
 								   target="_blank" v-else>
 								<v-icon color="grey lighten-1" size="18">bug_report</v-icon>
 							</v-btn>
@@ -133,7 +133,7 @@
 							>
 								<v-btn icon
 									   :small="$vuetify.breakpoint.lgAndDown"
-									   :href="getContextTargetUrl(pipeline.stages.staging.context, commit.raw.status.contexts || [])"
+									   :href="commit|contextTargetUrl(pipeline.stages.staging.context)"
 									   target="_blank"
 									   class="green white--text"
 									   v-if="'done' === pipeline.stages.staging.state"
@@ -143,7 +143,7 @@
 								</v-btn>
 								<v-btn icon
 									   :small="$vuetify.breakpoint.lgAndDown"
-									   :href="getContextTargetUrl(pipeline.stages.staging.context, commit.raw.status.contexts || [])"
+									   :href="commit|contextTargetUrl(pipeline.stages.staging.context)"
 									   target="_blank"
 									   class="red white--text"
 									   v-else-if="'error' === pipeline.stages.staging.state"
@@ -152,7 +152,7 @@
 								</v-btn>
 								<v-btn icon
 									   :small="$vuetify.breakpoint.lgAndDown"
-									   :href="getContextTargetUrl(pipeline.stages.staging.context, commit.raw.status.contexts || [])"
+									   :href="commit|contextTargetUrl(pipeline.stages.staging.context)"
 									   target="_blank"
 									   class="orange white--text pulsating"
 									   v-else-if="'in_progress' === pipeline.stages.staging.state"
@@ -161,7 +161,7 @@
 								</v-btn>
 								<v-btn icon
 									   :small="$vuetify.breakpoint.lgAndDown"
-									   :href="getContextTargetUrl(pipeline.stages.staging.context, commit.raw.status.contexts || [])"
+									   :href="commit|contextTargetUrl(pipeline.stages.staging.context)"
 									   target="_blank"
 									   class="grey lighten-3 white--text" v-else
 									   style="margin-left: -13px; margin-right: 8px;">
@@ -172,7 +172,7 @@
 
 								<v-btn icon
 									   :small="$vuetify.breakpoint.lgAndDown"
-									   :href="getContextTargetUrl(pipeline.stages.production.context, commit.raw.status.contexts || [])"
+									   :href="commit|contextTargetUrl(pipeline.stages.production.context)"
 									   target="_blank"
 									   class="green white--text"
 									   v-if="'done' === pipeline.stages.production.state"
@@ -181,7 +181,7 @@
 								</v-btn>
 								<v-btn icon
 									   :small="$vuetify.breakpoint.mdAndDown"
-									   :href="getContextTargetUrl(pipeline.stages.production.context, commit.raw.status.contexts || [])"
+									   :href="commit|contextTargetUrl(pipeline.stages.production.context)"
 									   target="_blank"
 									   class="red white--text"
 									   v-else-if="'error' === pipeline.stages.production.state"
@@ -190,7 +190,7 @@
 								</v-btn>
 								<v-btn icon
 									   :small="$vuetify.breakpoint.lgAndDown"
-									   :href="getContextTargetUrl(pipeline.stages.production.context, commit.raw.status.contexts || [])"
+									   :href="commit|contextTargetUrl(pipeline.stages.production.context)"
 									   target="_blank"
 									   class="orange white--text pulsating"
 									   v-else-if="'in_progress' === pipeline.stages.production.state"
@@ -199,7 +199,7 @@
 								</v-btn>
 								<v-btn icon
 									   :small="$vuetify.breakpoint.lgAndDown"
-									   :href="getContextTargetUrl(pipeline.stages.production.context, commit.raw.status.contexts || [])"
+									   :href="commit|contextTargetUrl(pipeline.stages.production.context)"
 									   target="_blank"
 									   class="grey lighten-3 white--text" v-else
 									   style="margin-left: 8px; margin-right: -13px;">
@@ -386,10 +386,17 @@
 					return ctx.context === context
 				})
 			},
-			getContextTargetUrl: function (context, contexts) {
-				const firstContext = _.chain(contexts).filter(ctx => ctx.context === context).first().value();
+		},
+		filters: {
+			contextTargetUrl: function(commit, context) {
+				if (!commit.raw.status || [] === commit.raw.status.contexts)
+				{
+					return undefined;
+				}
+
+				const firstContext = _.chain(commit.raw.status.contexts).filter(ctx => ctx.context === context).first().value();
 				return firstContext ? firstContext.targetUrl : undefined;
-			},
+			}
 		},
 		mounted: function () {
 			this.fetchCommits()

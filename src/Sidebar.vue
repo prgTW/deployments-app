@@ -1,6 +1,6 @@
 <template>
 	<v-list dense subheader>
-		<v-subheader>{{ organization.login }}</v-subheader>
+		<v-subheader>{{ owner }}</v-subheader>
 		<v-list-tile
 				:to="{name: 'repo_view', params: {owner: repository.node.owner.login, repo: repository.node.name, branch: repository.node.defaultBranchRef.name}}"
 				v-for="(repository, i) in repositories"

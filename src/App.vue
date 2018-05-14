@@ -34,7 +34,7 @@
 				</v-layout>
 			</v-container>
 		</v-content>
-		<v-footer app class="grey lighten-4">
+		<v-footer app class="grey lighten-4 hidden-md-and-down">
 			<v-layout row wrap justify-center>
 				<v-flex xs12 text-xs-center grey--text>
 					&copy;2018 — <strong>DocPlanner</strong>

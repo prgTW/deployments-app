@@ -38,19 +38,18 @@
 							<strong v-else class="grey--text">
 								{{ commit.raw.author.name }}
 							</strong>
-							<span v-if="!commit.raw.authoredByCommitter && commit.raw.committer.user">authored and</span>
+							<span v-if="!commit.raw.authoredByCommitter">authored and</span>
 							<span v-else>committed</span>
 
-							<span v-if="!commit.raw.authoredByCommitter">
+							<span class="grey--text" v-if="!commit.raw.authoredByCommitter">
 								<a :href="commit.raw.committer.user.url"
 								   target="_blank"
-								   class="grey--text"
 								   v-if="commit.raw.committer.user && commit.raw.committer.user.login"
 								><strong>{{ commit.raw.committer.user.login }}</strong></a>
-								<strong v-else class="grey--text">
+								<strong v-else>
 									{{ commit.raw.committer.name }}
 								</strong>
-								<span v-if="!commit.raw.authoredByCommitter && commit.raw.committer.user">committed</span>
+								<span v-if="!commit.raw.authoredByCommitter">committed</span>
 							</span>
 
 							<span :title="commit.raw.committedDate">

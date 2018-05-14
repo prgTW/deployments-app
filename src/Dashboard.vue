@@ -117,7 +117,7 @@
 								<v-icon color="grey lighten-1" size="18">bug_report</v-icon>
 							</v-btn>
 						</template>
-						<v-icon color="grey lighten-1" size="18" v-else>not_interested</v-icon>
+						<v-icon color="grey lighten-1" size="18" v-else>bug_report</v-icon>
 					</v-list-tile-action>
 
 					<template v-for="pipeline in commit.pipelines">

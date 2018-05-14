@@ -15,11 +15,9 @@
 				:clipped-left="$vuetify.breakpoint.lgAndUp"
 				fixed
 		>
-			<v-toolbar-title style="width: 300px" class="ml-0 pl-3" @click.stop="$router.push({path: '/'})">
+			<v-toolbar-title style="width: 350px" class="ml-0 pl-3">
 				<v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-				<span class="hidden-sm-and-down">
-					Deployments
-				</span>
+				DocPlanner Deployments
 			</v-toolbar-title>
 			<v-spacer></v-spacer>
 			<v-btn icon @click.stop="dark=!dark">

@@ -15,6 +15,7 @@ export const QUERY_COMMITS_HISTORY = gql`
                             url
                             authoredByCommitter
                             author {
+                                name
                                 avatarUrl
                                 user {
                                     login
@@ -22,6 +23,7 @@ export const QUERY_COMMITS_HISTORY = gql`
                                 }
                             }
                             committer {
+                                name
                                 avatarUrl
                                 user {
                                     login

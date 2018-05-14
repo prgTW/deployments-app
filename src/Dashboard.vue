@@ -32,16 +32,32 @@
 						<v-list-tile-sub-title>
 							<a :href="commit.raw.author.user.url"
 							   target="_blank"
-							   v-text="commit.raw.author.user.login"></a>
+							   class="grey--text"
+							   v-if="commit.raw.author.user && commit.raw.author.user.login"
+							>
+								<strong>
+									{{ commit.raw.author.user.login }}
+								</strong>
+							</a>
+							<strong v-else class="grey--text">
+								{{ commit.raw.author.name }}
+							</strong>
 							<span v-if="!commit.raw.authoredByCommitter && commit.raw.committer.user">authored and</span>
 							<span v-else>committed</span>
 
 							<span v-if="!commit.raw.authoredByCommitter">
 								<a :href="commit.raw.committer.user.url"
 								   target="_blank"
-								   v-if="commit.raw.committer.user"
-								   v-text="commit.raw.committer.user.login"
-								></a>
+								   class="grey--text"
+								   v-if="commit.raw.committer.user && commit.raw.committer.user.login"
+								>
+									<strong>
+										{{ commit.raw.committer.user.login }}
+									</strong>
+								</a>
+								<strong v-else class="grey--text">
+									{{ commit.raw.committer.name }}
+								</strong>
 								<span v-if="!commit.raw.authoredByCommitter && commit.raw.committer.user">committed</span>
 							</span>
 
@@ -68,7 +84,8 @@
 					</v-list-tile-action>
 
 					<v-list-tile-action class="mr-3">
-						<template v-if="commit.raw.status && hasContext('ci/circleci', commit.raw.status.contexts || [])">
+						<template
+								v-if="commit.raw.status && hasContext('ci/circleci', commit.raw.status.contexts || [])">
 							<v-btn icon small color="green"
 								   :href="getContextTargetUrl('ci/circleci', commit.raw.status.contexts || [])"
 								   target="_blank"
@@ -322,7 +339,7 @@
 					return ctx.context === context && "SUCCESS" === ctx.state
 				})
 			},
-			hasContext: function(context, contexts) {
+			hasContext: function (context, contexts) {
 				return _.some(contexts, function (ctx) {
 					return ctx.context === context
 				})

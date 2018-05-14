@@ -21,7 +21,14 @@
 					<v-icon small>access_time</v-icon>&nbsp;{{ date }}
 				</v-subheader>
 				<v-list-tile avatar ripple v-for="(commit, key) in commits" :key="key">
-					<v-list-tile-avatar>
+					<v-badge overlap left :color="commit.raw.signature.isValid ? 'green' : 'red'" v-if="commit.raw.signature">
+						<v-icon slot="badge" small color="white" v-if="commit.raw.signature.isValid">done</v-icon>
+						<v-icon slot="badge" small color="white" v-else>clear</v-icon>
+						<v-list-tile-avatar>
+								<img :src="commit.raw.author.avatarUrl">
+						</v-list-tile-avatar>
+					</v-badge>
+					<v-list-tile-avatar v-else>
 						<img :src="commit.raw.author.avatarUrl">
 					</v-list-tile-avatar>
 
@@ -130,7 +137,7 @@
 									   target="_blank"
 									   class="green white--text"
 									   v-if="'done' === pipeline.stages.staging.state"
-									   style="margin-left: -12px; margin-right: 8px;"
+									   style="margin-left: -13px; margin-right: 8px;"
 								>
 									<v-icon>{{ pipeline.stages.staging.icon }}</v-icon>
 								</v-btn>
@@ -140,7 +147,7 @@
 									   target="_blank"
 									   class="red white--text"
 									   v-else-if="'error' === pipeline.stages.staging.state"
-									   style="margin-left: -12px; margin-right: 8px;">
+									   style="margin-left: -13px; margin-right: 8px;">
 									<v-icon>{{ pipeline.stages.staging.icon }}</v-icon>
 								</v-btn>
 								<v-btn icon
@@ -149,7 +156,7 @@
 									   target="_blank"
 									   class="orange white--text pulsating"
 									   v-else-if="'in_progress' === pipeline.stages.staging.state"
-									   style="margin-left: -12px; margin-right: 8px;">
+									   style="margin-left: -13px; margin-right: 8px;">
 									<v-icon>{{ pipeline.stages.staging.icon }}</v-icon>
 								</v-btn>
 								<v-btn icon
@@ -157,7 +164,7 @@
 									   :href="getContextTargetUrl(pipeline.stages.staging.context, commit.raw.status.contexts || [])"
 									   target="_blank"
 									   class="grey lighten-3 white--text" v-else
-									   style="margin-left: -12px; margin-right: 8px;">
+									   style="margin-left: -13px; margin-right: 8px;">
 									<v-icon color="grey lighten-1">{{ pipeline.stages.staging.icon }}</v-icon>
 								</v-btn>
 
@@ -169,7 +176,7 @@
 									   target="_blank"
 									   class="green white--text"
 									   v-if="'done' === pipeline.stages.production.state"
-									   style="margin-left: 8px; margin-right: -12px;">
+									   style="margin-left: 8px; margin-right: -13px;">
 									<v-icon>{{ pipeline.stages.production.icon }}</v-icon>
 								</v-btn>
 								<v-btn icon
@@ -178,7 +185,7 @@
 									   target="_blank"
 									   class="red white--text"
 									   v-else-if="'error' === pipeline.stages.production.state"
-									   style="margin-left: 8px; margin-right: -12px;">
+									   style="margin-left: 8px; margin-right: -13px;">
 									<v-icon>{{ pipeline.stages.production.icon }}</v-icon>
 								</v-btn>
 								<v-btn icon
@@ -187,7 +194,7 @@
 									   target="_blank"
 									   class="orange white--text pulsating"
 									   v-else-if="'in_progress' === pipeline.stages.production.state"
-									   style="margin-left: 8px; margin-right: -12px;">
+									   style="margin-left: 8px; margin-right: -13px;">
 									<v-icon>{{ pipeline.stages.production.icon }}</v-icon>
 								</v-btn>
 								<v-btn icon
@@ -195,7 +202,7 @@
 									   :href="getContextTargetUrl(pipeline.stages.production.context, commit.raw.status.contexts || [])"
 									   target="_blank"
 									   class="grey lighten-3 white--text" v-else
-									   style="margin-left: 8px; margin-right: -12px;">
+									   style="margin-left: 8px; margin-right: -13px;">
 									<v-icon color="grey lighten-1">{{ pipeline.stages.production.icon }}
 									</v-icon>
 								</v-btn>

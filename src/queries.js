@@ -30,6 +30,9 @@ export const QUERY_COMMITS_HISTORY = gql`
                                     url
                                 }
                             }
+                            signature {
+                                isValid
+                            }
                             committedDate
                             messageHeadlineHTML
                             status {

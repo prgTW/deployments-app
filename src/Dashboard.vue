@@ -21,11 +21,12 @@
 					<v-icon small>access_time</v-icon>&nbsp;{{ date }}
 				</v-subheader>
 				<v-list-tile avatar ripple v-for="(commit, key) in commits" :key="key">
-					<v-badge overlap left :color="commit.raw.signature.isValid ? 'green' : 'red'" v-if="commit.raw.signature">
+					<v-badge overlap left :color="commit.raw.signature.isValid ? 'green' : 'red'"
+							 v-if="commit.raw.signature">
 						<v-icon slot="badge" small color="white" v-if="commit.raw.signature.isValid">done</v-icon>
 						<v-icon slot="badge" small color="white" v-else>clear</v-icon>
 						<v-list-tile-avatar>
-								<img :src="commit.raw.author.avatarUrl">
+							<img :src="commit.raw.author.avatarUrl">
 						</v-list-tile-avatar>
 					</v-badge>
 					<v-list-tile-avatar v-else>
@@ -135,7 +136,10 @@
 									   :small="$vuetify.breakpoint.lgAndDown"
 									   :href="commit|contextTargetUrl(pipeline.stages.staging.context)"
 									   target="_blank"
-									   class="green white--text"
+									   :class="{
+									   		'green white--text': true,
+									   		'pulsating': pipeline.stages.staging.in_progress,
+									   }"
 									   v-if="'done' === pipeline.stages.staging.state"
 									   style="margin-left: -13px; margin-right: 8px;"
 								>
@@ -145,7 +149,10 @@
 									   :small="$vuetify.breakpoint.lgAndDown"
 									   :href="commit|contextTargetUrl(pipeline.stages.staging.context)"
 									   target="_blank"
-									   class="red white--text"
+									   :class="{
+									   		'red white--text': true,
+									   		'pulsating': pipeline.stages.staging.in_progress,
+									   }"
 									   v-else-if="'error' === pipeline.stages.staging.state"
 									   style="margin-left: -13px; margin-right: 8px;">
 									<v-icon>{{ pipeline.stages.staging.icon }}</v-icon>
@@ -154,7 +161,10 @@
 									   :small="$vuetify.breakpoint.lgAndDown"
 									   :href="commit|contextTargetUrl(pipeline.stages.staging.context)"
 									   target="_blank"
-									   class="orange white--text pulsating"
+									   :class="{
+									   		'orange white--text': true,
+									   		'pulsating': pipeline.stages.staging.in_progress,
+									   }"
 									   v-else-if="'in_progress' === pipeline.stages.staging.state"
 									   style="margin-left: -13px; margin-right: 8px;">
 									<v-icon>{{ pipeline.stages.staging.icon }}</v-icon>
@@ -163,7 +173,11 @@
 									   :small="$vuetify.breakpoint.lgAndDown"
 									   :href="commit|contextTargetUrl(pipeline.stages.staging.context)"
 									   target="_blank"
-									   class="grey lighten-3 white--text" v-else
+									   :class="{
+									   		'grey lighten-3 white--text': true,
+									   		'pulsating': pipeline.stages.staging.in_progress,
+									   }"
+									   v-else
 									   style="margin-left: -13px; margin-right: 8px;">
 									<v-icon color="grey lighten-1">{{ pipeline.stages.staging.icon }}</v-icon>
 								</v-btn>
@@ -174,7 +188,10 @@
 									   :small="$vuetify.breakpoint.lgAndDown"
 									   :href="commit|contextTargetUrl(pipeline.stages.production.context)"
 									   target="_blank"
-									   class="green white--text"
+									   :class="{
+									   		'green white--text': true,
+									   		'pulsating': pipeline.stages.production.in_progress,
+									   }"
 									   v-if="'done' === pipeline.stages.production.state"
 									   style="margin-left: 8px; margin-right: -13px;">
 									<v-icon>{{ pipeline.stages.production.icon }}</v-icon>
@@ -183,7 +200,10 @@
 									   :small="$vuetify.breakpoint.mdAndDown"
 									   :href="commit|contextTargetUrl(pipeline.stages.production.context)"
 									   target="_blank"
-									   class="red white--text"
+									   :class="{
+									   		'red white--text': true,
+									   		'pulsating': pipeline.stages.production.in_progress,
+									   }"
 									   v-else-if="'error' === pipeline.stages.production.state"
 									   style="margin-left: 8px; margin-right: -13px;">
 									<v-icon>{{ pipeline.stages.production.icon }}</v-icon>
@@ -192,7 +212,10 @@
 									   :small="$vuetify.breakpoint.lgAndDown"
 									   :href="commit|contextTargetUrl(pipeline.stages.production.context)"
 									   target="_blank"
-									   class="orange white--text pulsating"
+									   :class="{
+									   		'orange white--text': true,
+									   		'pulsating': pipeline.stages.production.in_progress,
+									   }"
 									   v-else-if="'in_progress' === pipeline.stages.production.state"
 									   style="margin-left: 8px; margin-right: -13px;">
 									<v-icon>{{ pipeline.stages.production.icon }}</v-icon>
@@ -201,7 +224,11 @@
 									   :small="$vuetify.breakpoint.lgAndDown"
 									   :href="commit|contextTargetUrl(pipeline.stages.production.context)"
 									   target="_blank"
-									   class="grey lighten-3 white--text" v-else
+									   :class="{
+									   		'grey lighten-3 white--text': true,
+									   		'pulsating': pipeline.stages.production.in_progress,
+									   }"
+									   v-else
 									   style="margin-left: 8px; margin-right: -13px;">
 									<v-icon color="grey lighten-1">{{ pipeline.stages.production.icon }}
 									</v-icon>
@@ -267,12 +294,14 @@
 							staging: {
 								icon: "business",
 								context: "buddy/pipeline/staging-k1",
-								state: undefined
+								state: undefined,
+								in_progress: false,
 							},
 							production: {
 								icon: "public",
 								context: "buddy/pipeline/production-k1",
-								state: undefined
+								state: undefined,
+								in_progress: false,
 							},
 						},
 					},
@@ -282,19 +311,21 @@
 							staging: {
 								icon: "business",
 								context: "buddy/pipeline/staging-k2",
-								state: undefined
+								state: undefined,
+								in_progress: false,
 							},
 							production: {
 								icon: "public",
 								context: "buddy/pipeline/production-k2",
-								state: undefined
+								state: undefined,
+								in_progress: false,
 							},
 						},
 					},
 				];
 				let clonedCommits = _.cloneDeep(this.history)
 
-				let commits = _.map(clonedCommits, (commit) => {
+				let commits = _.map(clonedCommits, (commit, cIdx) => {
 					_.forEach(pipelines, (pipeline, pIdx) => {
 						_.forEach(pipeline.stages, (stage, sIdx) => {
 							if ('done' === stage.state) {
@@ -318,6 +349,12 @@
 								ERROR: "error",
 								PENDING: "in_progress",
 								SUCCESS: "done",
+							}[currentContext.state || ''];
+							pipelines[pIdx].stages[sIdx].in_progress = {
+								FAILURE: cIdx > 0 ? pipelines[pIdx].stages[sIdx].in_progress : false,
+								ERROR: cIdx > 0 ? pipelines[pIdx].stages[sIdx].in_progress : false,
+								PENDING: true,
+								SUCCESS: false,
 							}[currentContext.state || ''];
 						})
 					});
@@ -388,9 +425,8 @@
 			},
 		},
 		filters: {
-			contextTargetUrl: function(commit, context) {
-				if (!commit.raw.status || [] === commit.raw.status.contexts)
-				{
+			contextTargetUrl: function (commit, context) {
+				if (!commit.raw.status || [] === commit.raw.status.contexts) {
 					return undefined;
 				}
 

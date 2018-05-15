@@ -89,7 +89,7 @@
 							<v-btn icon
 								   :small="$vuetify.breakpoint.lgAndDown"
 								   color="green"
-								   :href="commit|contextTargetUrl('ci/circleci')"
+								   :href="getContextTargetUrl('ci/circleci', commit)"
 								   target="_blank"
 								   v-if="isContextSuccessful('ci/circleci', commit.raw.status.contexts || [])">
 								<v-icon color="white" size="18">bug_report</v-icon>
@@ -97,7 +97,7 @@
 							<v-btn icon
 								   :small="$vuetify.breakpoint.lgAndDown"
 								   color="orange" class="pulsating"
-								   :href="commit|contextTargetUrl('ci/circleci')"
+								   :href="getContextTargetUrl('ci/circleci', commit)"
 								   target="_blank"
 								   v-else-if="isContextPending('ci/circleci', commit.raw.status.contexts || [])">
 								<v-icon color="white" size="18">bug_report</v-icon>
@@ -105,7 +105,7 @@
 							<v-btn icon
 								   :small="$vuetify.breakpoint.lgAndDown"
 								   color="red"
-								   :href="commit|contextTargetUrl('ci/circleci')"
+								   :href="getContextTargetUrl('ci/circleci', commit)"
 								   target="_blank"
 								   v-else-if="isContextFailed('ci/circleci', commit.raw.status.contexts || [])">
 								<v-icon color="white" size="18">bug_report</v-icon>
@@ -113,7 +113,7 @@
 							<v-btn icon
 								   :small="$vuetify.breakpoint.lgAndDown"
 								   color="grey lighten-3"
-								   :href="commit|contextTargetUrl('ci/circleci')"
+								   :href="getContextTargetUrl('ci/circleci', commit)"
 								   target="_blank" v-else>
 								<v-icon color="grey lighten-1" size="18">bug_report</v-icon>
 							</v-btn>
@@ -134,19 +134,22 @@
 							>
 								<v-btn icon
 									   :small="$vuetify.breakpoint.lgAndDown"
-									   :href="commit|contextTargetUrl(pipeline.stages.staging.context)"
+									   :href="getContextTargetUrl(pipeline.stages.staging.context, commit)"
 									   target="_blank"
 									   :class="{
 									   		'green white--text': 'done' === pipeline.stages.staging.state,
 									   		'red white--text': 'error' === pipeline.stages.staging.state,
 									   		'orange white--text': 'in_progress' === pipeline.stages.staging.state,
 									   		'grey lighten-3 white--text': undefined === pipeline.stages.staging.state,
+									   		'btn--disabled lighten-2': !getContextTargetUrl(pipeline.stages.staging.context, commit),
 									   		'pulsating': pipeline.stages.staging.in_progress,
 									   }"
 									   style="margin-left: -13px; margin-right: 8px;"
 								>
 									<v-icon
-											:color="undefined === pipeline.stages.staging.state ? 'grey lighten-1' : undefined"
+											:class="{
+												'grey lighten-1': undefined === pipeline.stages.staging.state,
+										   }"
 											v-text="pipeline.stages.staging.icon">
 									</v-icon>
 								</v-btn>
@@ -155,19 +158,22 @@
 
 								<v-btn icon
 									   :small="$vuetify.breakpoint.lgAndDown"
-									   :href="commit|contextTargetUrl(pipeline.stages.production.context)"
+									   :href="getContextTargetUrl(pipeline.stages.production.context, commit)"
 									   target="_blank"
 									   :class="{
 									   		'green white--text': 'done' === pipeline.stages.production.state,
 									   		'red white--text': 'error' === pipeline.stages.production.state,
 									   		'orange white--text': 'in_progress' === pipeline.stages.production.state,
 									   		'grey lighten-3 white--text': undefined === pipeline.stages.production.state,
+									   		'btn--disabled lighten-2': !getContextTargetUrl(pipeline.stages.production.context, commit),
 									   		'pulsating': pipeline.stages.production.in_progress,
 									   }"
 									   style="margin-left: 8px; margin-right: -13px;"
 								>
 									<v-icon
-											:color="undefined === pipeline.stages.production.state ? 'grey lighten-1' : undefined"
+											:class="{
+												'grey lighten-1': undefined === pipeline.stages.production.state,
+										   }"
 											v-text="pipeline.stages.production.icon">
 									</v-icon>
 								</v-btn>
@@ -361,9 +367,7 @@
 					return ctx.context === context
 				})
 			},
-		},
-		filters: {
-			contextTargetUrl: function (commit, context) {
+			getContextTargetUrl: function (context, commit) {
 				if (!commit.raw.status || [] === commit.raw.status.contexts) {
 					return undefined;
 				}

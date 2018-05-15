@@ -137,49 +137,18 @@
 									   :href="commit|contextTargetUrl(pipeline.stages.staging.context)"
 									   target="_blank"
 									   :class="{
-									   		'green white--text': true,
+									   		'green white--text': 'done' === pipeline.stages.staging.state,
+									   		'red white--text': 'error' === pipeline.stages.staging.state,
+									   		'orange white--text': 'in_progress' === pipeline.stages.staging.state,
+									   		'grey lighten-3 white--text': undefined === pipeline.stages.staging.state,
 									   		'pulsating': pipeline.stages.staging.in_progress,
 									   }"
-									   v-if="'done' === pipeline.stages.staging.state"
 									   style="margin-left: -13px; margin-right: 8px;"
 								>
-									<v-icon>{{ pipeline.stages.staging.icon }}</v-icon>
-								</v-btn>
-								<v-btn icon
-									   :small="$vuetify.breakpoint.lgAndDown"
-									   :href="commit|contextTargetUrl(pipeline.stages.staging.context)"
-									   target="_blank"
-									   :class="{
-									   		'red white--text': true,
-									   		'pulsating': pipeline.stages.staging.in_progress,
-									   }"
-									   v-else-if="'error' === pipeline.stages.staging.state"
-									   style="margin-left: -13px; margin-right: 8px;">
-									<v-icon>{{ pipeline.stages.staging.icon }}</v-icon>
-								</v-btn>
-								<v-btn icon
-									   :small="$vuetify.breakpoint.lgAndDown"
-									   :href="commit|contextTargetUrl(pipeline.stages.staging.context)"
-									   target="_blank"
-									   :class="{
-									   		'orange white--text': true,
-									   		'pulsating': pipeline.stages.staging.in_progress,
-									   }"
-									   v-else-if="'in_progress' === pipeline.stages.staging.state"
-									   style="margin-left: -13px; margin-right: 8px;">
-									<v-icon>{{ pipeline.stages.staging.icon }}</v-icon>
-								</v-btn>
-								<v-btn icon
-									   :small="$vuetify.breakpoint.lgAndDown"
-									   :href="commit|contextTargetUrl(pipeline.stages.staging.context)"
-									   target="_blank"
-									   :class="{
-									   		'grey lighten-3 white--text': true,
-									   		'pulsating': pipeline.stages.staging.in_progress,
-									   }"
-									   v-else
-									   style="margin-left: -13px; margin-right: 8px;">
-									<v-icon color="grey lighten-1">{{ pipeline.stages.staging.icon }}</v-icon>
+									<v-icon
+											:color="undefined === pipeline.stages.staging.state ? 'grey lighten-1' : undefined"
+											v-text="pipeline.stages.staging.icon">
+									</v-icon>
 								</v-btn>
 
 								<strong>{{ pipeline.name }}</strong>
@@ -189,48 +158,17 @@
 									   :href="commit|contextTargetUrl(pipeline.stages.production.context)"
 									   target="_blank"
 									   :class="{
-									   		'green white--text': true,
+									   		'green white--text': 'done' === pipeline.stages.production.state,
+									   		'red white--text': 'error' === pipeline.stages.production.state,
+									   		'orange white--text': 'in_progress' === pipeline.stages.production.state,
+									   		'grey lighten-3 white--text': undefined === pipeline.stages.production.state,
 									   		'pulsating': pipeline.stages.production.in_progress,
 									   }"
-									   v-if="'done' === pipeline.stages.production.state"
-									   style="margin-left: 8px; margin-right: -13px;">
-									<v-icon>{{ pipeline.stages.production.icon }}</v-icon>
-								</v-btn>
-								<v-btn icon
-									   :small="$vuetify.breakpoint.mdAndDown"
-									   :href="commit|contextTargetUrl(pipeline.stages.production.context)"
-									   target="_blank"
-									   :class="{
-									   		'red white--text': true,
-									   		'pulsating': pipeline.stages.production.in_progress,
-									   }"
-									   v-else-if="'error' === pipeline.stages.production.state"
-									   style="margin-left: 8px; margin-right: -13px;">
-									<v-icon>{{ pipeline.stages.production.icon }}</v-icon>
-								</v-btn>
-								<v-btn icon
-									   :small="$vuetify.breakpoint.lgAndDown"
-									   :href="commit|contextTargetUrl(pipeline.stages.production.context)"
-									   target="_blank"
-									   :class="{
-									   		'orange white--text': true,
-									   		'pulsating': pipeline.stages.production.in_progress,
-									   }"
-									   v-else-if="'in_progress' === pipeline.stages.production.state"
-									   style="margin-left: 8px; margin-right: -13px;">
-									<v-icon>{{ pipeline.stages.production.icon }}</v-icon>
-								</v-btn>
-								<v-btn icon
-									   :small="$vuetify.breakpoint.lgAndDown"
-									   :href="commit|contextTargetUrl(pipeline.stages.production.context)"
-									   target="_blank"
-									   :class="{
-									   		'grey lighten-3 white--text': true,
-									   		'pulsating': pipeline.stages.production.in_progress,
-									   }"
-									   v-else
-									   style="margin-left: 8px; margin-right: -13px;">
-									<v-icon color="grey lighten-1">{{ pipeline.stages.production.icon }}
+									   style="margin-left: 8px; margin-right: -13px;"
+								>
+									<v-icon
+											:color="undefined === pipeline.stages.production.state ? 'grey lighten-1' : undefined"
+											v-text="pipeline.stages.production.icon">
 									</v-icon>
 								</v-btn>
 							</v-chip>

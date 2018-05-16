@@ -128,7 +128,7 @@
 									small
 									:class="{
 										'lighten-3': 'done' !== pipeline.stages.staging.state || 'done' !== pipeline.stages.production.state,
-										'grey grey--text': 'done' !== pipeline.stages.staging.state || 'done' !== pipeline.stages.production.state,
+										'grey grey--text text--darken-3': 'done' !== pipeline.stages.staging.state || 'done' !== pipeline.stages.production.state,
 										'green white--text': 'done' === pipeline.stages.staging.state && 'done' === pipeline.stages.production.state,
 									}"
 							>
@@ -141,17 +141,12 @@
 									   		'red white--text': 'error' === pipeline.stages.staging.state,
 									   		'orange white--text': 'in_progress' === pipeline.stages.staging.state,
 									   		'grey lighten-3 white--text': undefined === pipeline.stages.staging.state,
-									   		'btn--disabled lighten-2': !getContextTargetUrl(pipeline.stages.staging.context, commit),
+									   		'btn--disabled lighten-3': !getContextTargetUrl(pipeline.stages.staging.context, commit),
 									   		'pulsating': pipeline.stages.staging.in_progress,
 									   }"
 									   style="margin-left: -13px; margin-right: 8px;"
 								>
-									<v-icon
-											:class="{
-												'grey lighten-1': undefined === pipeline.stages.staging.state,
-										   }"
-											v-text="pipeline.stages.staging.icon">
-									</v-icon>
+									<v-icon v-text="pipeline.stages.staging.icon"></v-icon>
 								</v-btn>
 
 								<strong>{{ pipeline.name }}</strong>
@@ -165,17 +160,12 @@
 									   		'red white--text': 'error' === pipeline.stages.production.state,
 									   		'orange white--text': 'in_progress' === pipeline.stages.production.state,
 									   		'grey lighten-3 white--text': undefined === pipeline.stages.production.state,
-									   		'btn--disabled lighten-2': !getContextTargetUrl(pipeline.stages.production.context, commit),
+									   		'btn--disabled lighten-3': !getContextTargetUrl(pipeline.stages.production.context, commit),
 									   		'pulsating': pipeline.stages.production.in_progress,
 									   }"
 									   style="margin-left: 8px; margin-right: -13px;"
 								>
-									<v-icon
-											:class="{
-												'grey lighten-1': undefined === pipeline.stages.production.state,
-										   }"
-											v-text="pipeline.stages.production.icon">
-									</v-icon>
+									<v-icon v-text="pipeline.stages.production.icon"></v-icon>
 								</v-btn>
 							</v-chip>
 						</v-list-tile-action>

@@ -335,7 +335,7 @@
 					_.forEach(pulsatingElements, (elem) => {
 						elem.classList.add('pulsating')
 					})
-				}, 1)
+				}, 1000)
 			},
 			isContextPending: function (context, contexts) {
 				return _.some(contexts, function (ctx) {

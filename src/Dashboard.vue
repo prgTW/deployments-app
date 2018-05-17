@@ -170,6 +170,11 @@
 							</v-chip>
 						</v-list-tile-action>
 					</template>
+					<template v-if="0 === commit.pipelines.length">
+						<v-list-tile-action>
+							<em class="grey--text text--lighten-1">no pipelines defined</em>
+						</v-list-tile-action>
+					</template>
 				</v-list-tile>
 				<v-divider></v-divider>
 			</v-list>
@@ -182,6 +187,7 @@
 	import moment from 'moment';
 	import RelativeTime from './RelativeTime';
 	import {QUERY_COMMITS_HISTORY} from './queries.js';
+	import {getPipelines} from './pipelines.js';
 
 	export default {
 		apollo: {
@@ -221,42 +227,7 @@
 		}),
 		computed: {
 			commitsByDate: function () {
-				let pipelines = [
-					{
-						name: "K1",
-						stages: {
-							staging: {
-								icon: "business",
-								context: "buddy/pipeline/staging-k1",
-								state: undefined,
-								in_progress: false,
-							},
-							production: {
-								icon: "public",
-								context: "buddy/pipeline/production-k1",
-								state: undefined,
-								in_progress: false,
-							},
-						},
-					},
-					{
-						name: "K2",
-						stages: {
-							staging: {
-								icon: "business",
-								context: "buddy/pipeline/staging-k2",
-								state: undefined,
-								in_progress: false,
-							},
-							production: {
-								icon: "public",
-								context: "buddy/pipeline/production-k2",
-								state: undefined,
-								in_progress: false,
-							},
-						},
-					},
-				];
+				let pipelines = getPipelines(this.$route.params.owner, this.$route.params.repo)
 				let clonedCommits = _.cloneDeep(this.history)
 
 				let commits = _.map(clonedCommits, (commit, cIdx) => {

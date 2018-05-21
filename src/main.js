@@ -5,6 +5,7 @@ import Vuetify from 'vuetify'
 import 'babel-polyfill'
 import App from './App.vue'
 import Dashboard from './Dashboard.vue'
+import RepoView from './RepoView.vue'
 
 import {ApolloClient} from 'apollo-client'
 import {HttpLink} from 'apollo-link-http'
@@ -48,9 +49,14 @@ const apolloProvider = new VueApollo({
 
 const routes = [
 	{
+		name: 'dashboard',
+		path: '/',
+		component: Dashboard
+	},
+	{
 		name: 'repo_view',
 		path: '/repos/:owner/:repo/:branch',
-		component: Dashboard
+		component: RepoView
 	},
 ];
 

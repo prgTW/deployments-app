@@ -7,7 +7,7 @@
 		>
 			<v-subheader>{{ owner }}</v-subheader>
 			<v-list-tile
-					:to="{name: 'repo_view', params: {owner: repository.owner, repo: repository.name}}"
+					:to="{name: 'repo_view', params: {owner: repository.owner, repo: repository.name, branch: repository.branch}}"
 					v-for="(repository) in repositories"
 					:key="`starred-${repository.owner}-${repository.name}`"
 			>

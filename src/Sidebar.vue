@@ -7,7 +7,7 @@
 			</v-flex>
 		</v-layout>
 		<v-list-tile
-				:to="{name: 'repo_view', params: {owner: repository.node.owner.login, repo: repository.node.name}}"
+				:to="{name: 'repo_view', params: {owner: repository.node.owner.login, repo: repository.node.name, branch: repository.node.defaultBranchRef.name}}"
 				v-for="(repository, i) in repositories"
 				v-if="!isStarredRepository(repository.node.owner.login, repository.node.name)"
 				:key="`all-${i}`"
@@ -18,7 +18,7 @@
 				</v-list-tile-title>
 			</v-list-tile-content>
 			<v-list-tile-action>
-				<v-btn icon ripple @click.prevent="starRepository({owner: repository.node.owner.login, name: repository.node.name})">
+				<v-btn icon ripple @click.prevent="starRepository({owner: repository.node.owner.login, name: repository.node.name, branch: repository.node.defaultBranchRef.name})">
 					<v-icon color="grey lighten-1">star_border</v-icon>
 				</v-btn>
 			</v-list-tile-action>

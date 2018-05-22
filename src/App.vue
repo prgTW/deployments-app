@@ -1,5 +1,5 @@
 <template>
-	<v-app :dark="dark">
+	<v-app :dark="isDark">
 		<v-navigation-drawer
 				fixed
 				:clipped="$vuetify.breakpoint.lgAndUp"
@@ -21,8 +21,8 @@
 				DocPlanner Deployments
 			</v-toolbar-title>
 			<v-spacer></v-spacer>
-			<v-btn icon @click.stop="dark=!dark">
-				<v-icon :class="{'grey--text': dark}">highlight</v-icon>
+			<v-btn icon @click.stop="toggleDark()">
+				<v-icon :class="{'grey--text': isDark}">highlight</v-icon>
 			</v-btn>
 
 			<avatar></avatar>
@@ -49,18 +49,26 @@
 	import Avatar from "./Avatar";
 	import Sidebar from "./Sidebar";
 	import Starred from "./Starred";
+	import {mapGetters, mapMutations} from 'vuex';
 
 	export default {
 		components: {Sidebar, Starred, Avatar},
 		data: () => ({
 			dialog: false,
 			drawer: null,
-			dark: false,
 		}),
 		props: {
 			source: String
 		},
+		computed: {
+			...mapGetters([
+				'isDark',
+			]),
+		},
 		methods: {
+			...mapMutations([
+				'toggleDark',
+			]),
 			showRepoView: function (owner, repo) {
 				this.$router.push({
 					name: 'repo_view',

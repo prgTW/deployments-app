@@ -8,8 +8,9 @@ function createStore() {
 			starredRepos: JSON.parse(localStorage.getItem('starredRepos') || '[]'),
 		},
 		getters: {
+			isDark: (state) => state.isDark,
 			groupedStarredRepositories: (state) => {
-				return _.chain(state.starredRepos).sortBy(['owner', 'name']).groupBy(r => r.owner).value()
+				return _.chain(state.starredRepos).sortBy(['owner', 'name', 'branch']).groupBy(r => r.owner).value()
 
 			},
 			isStarredRepository: (state) => (owner, name) => {
@@ -17,8 +18,12 @@ function createStore() {
 			},
 		},
 		mutations: {
-			starRepository: (state, {owner, name}) => {
-				state.starredRepos.push({owner, name});
+			toggleDark: (state) => {
+				state.isDark = !state.isDark
+				localStorage.setItem('isDark', JSON.stringify(state.isDark))
+			},
+			starRepository: (state, {owner, name, branch}) => {
+				state.starredRepos.push({owner, name, branch});
 				localStorage.setItem('starredRepos', JSON.stringify(state.starredRepos))
 			},
 			unstarRepository: (state, {owner, name}) => {

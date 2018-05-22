@@ -188,6 +188,7 @@
 	import RelativeTime from './RelativeTime';
 	import {QUERY_COMMITS_HISTORY} from './queries.js';
 	import {getConfig} from './pipelines.js';
+	import {resetAnimations} from "./helpers";
 
 	export default {
 		apollo: {
@@ -207,12 +208,12 @@
 					this.hasNexPage = result.data.repository.ref.target.history.pageInfo.hasNextPage
 					this.isLoading = false
 					this.resetTimer()
-					this.resetAnimation()
+					resetAnimations()
 				},
 				error() {
 					this.isLoading = false
 					this.resetTimer()
-					this.resetAnimation()
+					resetAnimations()
 				}
 			},
 		},
@@ -298,17 +299,6 @@
 						this.fetchCommits()
 					}
 				}, 1000);
-			},
-			resetAnimation: function () {
-				let pulsatingElements = document.querySelectorAll('.pulsating');
-				_.forEach(pulsatingElements, (elem) => {
-					elem.classList.remove('pulsating')
-				})
-				setTimeout(() => {
-					_.forEach(pulsatingElements, (elem) => {
-						elem.classList.add('pulsating')
-					})
-				}, 1000)
 			},
 			isContextPending: function (context, contexts) {
 				return _.some(contexts, function (ctx) {

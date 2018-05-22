@@ -1,10 +1,16 @@
 <template>
 	<v-list dense subheader>
 		<v-subheader>{{ owner }}</v-subheader>
+		<v-layout row justify-center v-if="$apollo.queries.organization.loading">
+			<v-flex xs10>
+				<v-progress-linear indeterminate color="grey"></v-progress-linear>
+			</v-flex>
+		</v-layout>
 		<v-list-tile
-				:to="{name: 'repo_view', params: {owner: repository.node.owner.login, repo: repository.node.name, branch: repository.node.defaultBranchRef.name}}"
+				:to="{name: 'repo_view', params: {owner: repository.node.owner.login, repo: repository.node.name}}"
 				v-for="(repository, i) in repositories"
-				:key="i"
+				v-if="!isStarredRepository(repository.node.owner.login, repository.node.name)"
+				:key="`all-${i}`"
 		>
 			<v-list-tile-content>
 				<v-list-tile-title>
@@ -12,7 +18,7 @@
 				</v-list-tile-title>
 			</v-list-tile-content>
 			<v-list-tile-action>
-				<v-btn icon ripple>
+				<v-btn icon ripple @click.prevent="starRepository({owner: repository.node.owner.login, name: repository.node.name})">
 					<v-icon color="grey lighten-1">star_border</v-icon>
 				</v-btn>
 			</v-list-tile-action>
@@ -23,6 +29,7 @@
 <script>
 	import {QUERY_ORGANISATION_REPOSITORIES} from "./queries";
 	import _ from 'lodash';
+	import { mapGetters, mapMutations } from 'vuex'
 
 	export default {
 		apollo: {
@@ -49,6 +56,9 @@
 			isLoading: true,
 		}),
 		computed: {
+			...mapGetters([
+				'isStarredRepository',
+			]),
 			repositories() {
 				if (this.isError || this.isLoading) {
 					return [];
@@ -60,6 +70,9 @@
 			}
 		},
 		methods: {
+			...mapMutations([
+				'starRepository'
+			]),
 			showRepoView: function (owner, repo) {
 				this.$router.push({
 					name: 'repo_view',

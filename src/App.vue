@@ -6,6 +6,7 @@
 				app
 				v-model="drawer"
 		>
+			<starred></starred>
 			<sidebar owner="DocPlanner"></sidebar>
 		</v-navigation-drawer>
 		<v-toolbar
@@ -47,9 +48,10 @@
 <script>
 	import Avatar from "./Avatar";
 	import Sidebar from "./Sidebar";
+	import Starred from "./Starred";
 
 	export default {
-		components: {Sidebar, Avatar},
+		components: {Sidebar, Starred, Avatar},
 		data: () => ({
 			dialog: false,
 			drawer: null,

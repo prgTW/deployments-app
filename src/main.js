@@ -13,6 +13,7 @@ import {InMemoryCache} from 'apollo-cache-inmemory'
 import VueApollo from 'vue-apollo'
 import Raven from 'raven-js';
 import RavenVue from 'raven-js/plugins/vue';
+import {createStore} from "./store.js";
 
 Vue.use(VueRouter)
 Vue.use(Vuex)
@@ -64,8 +65,11 @@ const router = new VueRouter({
 	routes
 })
 
+const store = createStore();
+
 const app = new Vue({
 	el: '#app',
+	store,
 	apolloProvider,
 	router,
 	render: h => h(App),

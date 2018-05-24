@@ -31,6 +31,7 @@
     "moment": "^2.22.1",
     "moment-shortformat": "^2.1.0",
     "moment-timer": "^1.2.3",
+    "node-sass": "^4.5.3",
     "raven-js": "^3.25.1",
     "requirejs": "^2.3.5",
     "sass-loader": "^6.0.6",

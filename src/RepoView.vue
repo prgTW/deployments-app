@@ -337,32 +337,3 @@
 		}
 	}
 </script>
-
-<style scoped>
-	.pulsating {
-		-webkit-animation: pulse 2s ease-in-out;
-		-moz-animation: pulse 2s ease-in-out;
-		animation: pulse 2s ease-in-out;
-		-webkit-animation-iteration-count: infinite;
-		-moz-animation-iteration-count: infinite;
-		animation-iteration-count: infinite;
-	}
-
-	@keyframes pulse {
-		0% {
-			-webkit-transform: scale(0.8);
-		}
-		25% {
-			-webkit-transform: scale(0.8);
-		}
-		50% {
-			-webkit-transform: scale(1.2);
-		}
-		75% {
-			-webkit-transform: scale(1.2);
-		}
-		100% {
-			-webkit-transform: scale(0.8);
-		}
-	}
-</style>

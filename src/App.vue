@@ -91,19 +91,28 @@
 
 	@keyframes pulse {
 		0% {
-			-webkit-transform: scale(0.8);
+			transform: scale(1.0);
 		}
-		25% {
-			-webkit-transform: scale(0.8);
+		30% {
+			transform: scale(1.0);
+		}
+		40% {
+			transform: scale(1.15);
 		}
 		50% {
-			-webkit-transform: scale(1.2);
+			transform: scale(1.0);
 		}
-		75% {
-			-webkit-transform: scale(1.2);
+		60% {
+			transform: scale(1.15);
+		}
+		70% {
+			transform: scale(1.0);
+		}
+		80% {
+			transform: scale(1.0);
 		}
 		100% {
-			-webkit-transform: scale(0.8);
+			transform: scale(1.0);
 		}
 	}
 </style>

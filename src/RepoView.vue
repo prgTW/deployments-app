@@ -16,7 +16,7 @@
 				<strong>Loading</strong>
 			</v-snackbar>
 
-			<v-list two-line subheader v-for="(commits, date) in commitsByDate" :key="date">
+			<v-list dense two-line subheader v-for="(commits, date) in commitsByDate" :key="date">
 				<v-subheader :key="date">
 					<v-icon small>access_time</v-icon>&nbsp;{{ date }}
 				</v-subheader>

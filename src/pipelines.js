@@ -93,6 +93,7 @@ export const CONFIG = {
 	'DocPlanner/monolith-app': {
 		baseRef: 'develop',
 		pipelines: [
+			createStage('PA', 'staging', 'buddy/pipeline/phraseapp update', 'production', 'buddy/pipeline/phraseapp update'),
 			createStage('K1', 'staging', 'buddy/pipeline/staging-k1', 'master', 'buddy/pipeline/production-k1'),
 			createStage('K2', 'staging', 'buddy/pipeline/staging-k2', 'master', 'buddy/pipeline/production-k2'),
 		]

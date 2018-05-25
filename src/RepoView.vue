@@ -222,8 +222,8 @@
 			history: [],
 			hasNexPage: false,
 			isLoading: true,
-			refreshInterval: 180,
-			refreshTimeout: 180,
+			refreshInterval: 60,
+			refreshTimeout: 60,
 			refreshIntervalHandle: undefined,
 		}),
 		computed: {

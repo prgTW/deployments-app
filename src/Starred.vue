@@ -17,7 +17,7 @@
 					</v-list-tile-title>
 				</v-list-tile-content>
 				<v-list-tile-action>
-					<v-btn icon ripple
+					<v-btn small icon ripple
 						   @click.prevent="unstarRepository({owner: repository.owner, name: repository.name})">
 						<v-icon color="orange">star</v-icon>
 					</v-btn>

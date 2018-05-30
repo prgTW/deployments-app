@@ -200,7 +200,7 @@
 						owner: this.$route.params.owner,
 						name: this.$route.params.repo,
 						qualifiedName: `refs/heads/${this.$route.params.branch}`,
-						count: 50,
+						count: 100,
 					}
 				},
 				result(result) {

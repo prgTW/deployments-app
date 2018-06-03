@@ -208,7 +208,7 @@ export const CONFIG = {
 			createStage('staging', createIcon('settings', calculateStateFromStatusCheck('buddy/pipeline/staging'))),
 			createStage('staging', createIcon('business', calculateStateFromStatusCheck('buddy/pipeline/staging-k1'))),
 			createStage('staging', createIcon('business', calculateStateFromStatusCheck('buddy/pipeline/staging-k2'))),
-			createStage('staging', createIcon('business', calculateStateFromStatusCheck('buddy/pipeline/zltapp-k2'))),
+			createStage('staging', createIcon('search', calculateStateFromStatusCheck('buddy/pipeline/zltapp-k2'))),
 		]),
 		createCluster('PROD', calculateClusterStateFromStageStates, [
 			createStage('master', createIcon('settings', calculateStateFromStatusCheck('buddy/pipeline/production'))),

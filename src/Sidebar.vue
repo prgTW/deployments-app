@@ -27,6 +27,7 @@
 				</v-btn>
 				<v-btn
 						v-else
+						small
 						icon
 						ripple
 						@click.prevent="starRepository({owner: repository.node.owner.login, name: repository.node.name, branch: repository.node.defaultBranchRef.name})"

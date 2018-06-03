@@ -91,13 +91,17 @@
 							}"
 					>
 						<template v-if="!cluster.name">
-							<v-btn
+							<v-tooltip
 									v-for="(stage) in cluster.stages"
-									icon
-									:href="stage.href"
-									:small="$vuetify.breakpoint.lgAndDown"
-									target="_blank"
-									:class="{
+									top
+							>
+								<v-btn
+										slot="activator"
+										icon
+										:href="stage.href"
+										:small="$vuetify.breakpoint.lgAndDown"
+										target="_blank"
+										:class="{
 										'green white--text': 'success' === stage.state,
 										'red white--text': 'failure' === stage.state,
 										'orange white--text': 'in_progress' === stage.state,
@@ -105,28 +109,34 @@
 										'btn--disabled lighten-3': !stage.href,
 										'pulsating': stage.inProgress,
 									}"
-							>
-								<v-icon v-text="stage.data.icon" size="18"></v-icon>
-							</v-btn>
+								>
+									<v-icon v-text="stage.data.icon" size="18"></v-icon>
+								</v-btn>
+								<span>{{ stage.tooltip }}</span>
+							</v-tooltip>
 						</template>
 						<v-chip
 								v-else
 								disabled
 								small
 								:class="{
-									'green white--text': 'success' === cluster.state,
-									'red white--text': 'failure' === cluster.state,
-									'orange white--text': 'in_progress' === cluster.state,
+									'green white--text': 'success' === cluster.state.state,
+									'red white--text': 'failure' === cluster.state.state,
+									'orange white--text': 'in_progress' === cluster.state.state,
 								}"
 						>
 							<strong>{{ cluster.name }}</strong>
-							<v-btn
+							<v-tooltip
+									top
 									v-for="(stage) in cluster.stages"
-									icon
-									:small="$vuetify.breakpoint.lgAndDown"
-									:href="stage.href"
-									target="_blank"
-									:class="{
+							>
+								<v-btn
+										slot="activator"
+										icon
+										:small="$vuetify.breakpoint.lgAndDown"
+										:href="stage.href"
+										target="_blank"
+										:class="{
 										'green white--text': 'success' === stage.state,
 										'red white--text': 'failure' === stage.state,
 										'orange white--text': 'in_progress' === stage.state,
@@ -134,10 +144,12 @@
 										'btn--disabled lighten-3': !stage.href,
 										'pulsating': stage.inProgress,
 									}"
-									style="margin-left: 8px; margin-right: -13px;"
-							>
-								<v-icon v-text="stage.data.icon"></v-icon>
-							</v-btn>
+										style="margin-left: 8px; margin-right: -13px;"
+								>
+									<v-icon v-text="stage.data.icon"></v-icon>
+								</v-btn>
+								<span>{{ stage.tooltip }}</span>
+							</v-tooltip>
 						</v-chip>
 					</v-list-tile-action>
 
@@ -211,7 +223,7 @@
 					return _.mapValues(config.clusters, (cluster) => {
 						return {
 							name: cluster.name,
-							state: STATE.IDLE,
+							state: {state: STATE.IDLE, inProgress: false},
 							stages: _.mapValues(cluster.stages, () => {
 								return {state: STATE.IDLE, inProgress: false, href: undefined};
 							})
@@ -235,8 +247,10 @@
 						});
 
 						const clusterState = cluster.stateFunc(
+							commit.node,
+							commitIdx > 0 ? clonedCommits[commitIdx - 1].node : undefined,
+							commitIdx > 0 ? previousState[commitIdx - 1][clusterIdx]['state'] : undefined,
 							stagesData,
-							commitIdx > 0 ? previousState[commitIdx - 1][clusterIdx]['state'] : undefined
 						);
 
 						previousState[commitIdx][clusterIdx]['state'] = clusterState

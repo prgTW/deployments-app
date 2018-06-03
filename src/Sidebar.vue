@@ -9,7 +9,6 @@
 		<v-list-tile
 				:to="{name: 'repo_view', params: {owner: repository.node.owner.login, repo: repository.node.name, branch: repository.node.defaultBranchRef.name}}"
 				v-for="(repository, i) in repositories"
-				v-if="!isStarredRepository(repository.node.owner.login, repository.node.name)"
 				:key="`all-${i}`"
 		>
 			<v-list-tile-content>
@@ -18,7 +17,20 @@
 				</v-list-tile-title>
 			</v-list-tile-content>
 			<v-list-tile-action>
-				<v-btn small icon ripple @click.prevent="starRepository({owner: repository.node.owner.login, name: repository.node.name, branch: repository.node.defaultBranchRef.name})">
+				<v-btn
+						v-if="isStarredRepository(repository.node.owner.login, repository.node.name)"
+						small
+						icon
+						ripple
+						@click.prevent="unstarRepository({owner: repository.node.owner.login, name: repository.node.name, branch: repository.node.defaultBranchRef.name})">
+					<v-icon color="orange">star</v-icon>
+				</v-btn>
+				<v-btn
+						v-else
+						icon
+						ripple
+						@click.prevent="starRepository({owner: repository.node.owner.login, name: repository.node.name, branch: repository.node.defaultBranchRef.name})"
+				>
 					<v-icon color="grey lighten-1">star_border</v-icon>
 				</v-btn>
 			</v-list-tile-action>
@@ -29,7 +41,7 @@
 <script>
 	import {QUERY_ORGANISATION_REPOSITORIES} from "./queries";
 	import _ from 'lodash';
-	import { mapGetters, mapMutations } from 'vuex'
+	import {mapGetters, mapMutations} from 'vuex'
 
 	export default {
 		apollo: {
@@ -71,7 +83,8 @@
 		},
 		methods: {
 			...mapMutations([
-				'starRepository'
+				'starRepository',
+				'unstarRepository'
 			]),
 			showRepoView: function (owner, repo) {
 				this.$router.push({

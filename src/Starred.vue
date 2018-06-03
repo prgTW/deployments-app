@@ -8,8 +8,8 @@
 			<v-subheader>{{ owner }}</v-subheader>
 			<v-list-tile
 					:to="{name: 'repo_view', params: {owner: repository.owner, repo: repository.name, branch: repository.branch}}"
-					v-for="(repository) in repositories"
-					:key="`starred-${repository.owner}-${repository.name}`"
+					v-for="(repository, i) in repositories"
+					:key="`starred-${i}`"
 			>
 				<v-list-tile-content>
 					<v-list-tile-title>

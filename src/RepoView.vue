@@ -188,7 +188,7 @@
 				},
 				result(result) {
 					this.history = result.data.repository.ref.target.history.edges
-					this.hasNexPage = result.data.repository.ref.target.history.pageInfo.hasNextPage
+					this.hasNextPage = result.data.repository.ref.target.history.pageInfo.hasNextPage
 					this.isLoading = false
 					this.resetTimer()
 					resetAnimations()
@@ -203,7 +203,7 @@
 		components: {RelativeTime},
 		data: () => ({
 			history: [],
-			hasNexPage: false,
+			hasNextPage: false,
 			isLoading: true,
 			refreshInterval: 60,
 			refreshTimeout: 60,

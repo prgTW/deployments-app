@@ -16,156 +16,13 @@
 				<strong>Loading</strong>
 			</v-snackbar>
 
-			<v-list :dense="$vuetify.breakpoint.lgAndDown" two-line subheader
-					v-for="(commitDatas, date) in commitsByDate" :key="date">
-				<v-subheader :key="date">
-					<v-icon small>access_time</v-icon>&nbsp;{{ date }}
-				</v-subheader>
-				<v-list-tile avatar ripple v-for="commitData in commitDatas" :key="commitData.commit.abbreviatedOid">
-					<v-badge overlap left :color="commitData.commit.signature.isValid ? 'green' : 'red'"
-							 v-if="commitData.commit.signature">
-						<v-icon slot="badge" small color="white" v-if="commitData.commit.signature.isValid">done
-						</v-icon>
-						<v-icon slot="badge" small color="white" v-else>clear</v-icon>
-						<v-list-tile-avatar>
-							<img :src="commitData.commit.author.avatarUrl">
-						</v-list-tile-avatar>
-					</v-badge>
-					<v-list-tile-avatar v-else>
-						<img :src="commitData.commit.author.avatarUrl">
-					</v-list-tile-avatar>
+			<CommitsList
+					v-for="(commits, date) in commitsByDate"
+					:key="date"
+					:commits="commits"
+					:date="date"
+			/>
 
-					<v-list-tile-content>
-						<v-list-tile-title>
-							<strong v-html="commitData.commit.messageHeadlineHTML"></strong>
-						</v-list-tile-title>
-						<v-list-tile-sub-title>
-							<a :href="commitData.commit.author.user.url"
-							   target="_blank"
-							   class="grey--text"
-							   v-if="commitData.commit.author.user && commitData.commit.author.user.login"
-							><strong>{{ commitData.commit.author.user.login }}</strong></a>
-							<strong v-else class="grey--text">
-								{{ commitData.commit.author.name }}
-							</strong>
-							<span v-if="!commitData.commit.authoredByCommitter">authored and</span>
-							<span v-else>committed</span>
-
-							<span v-if="!commitData.commit.authoredByCommitter">
-								<a :href="commitData.commit.committer.user.url"
-								   target="_blank"
-								   class="grey--text"
-								   v-if="commitData.commit.committer.user && commitData.commit.committer.user.login"
-								><strong>{{ commitData.commit.committer.user.login }}</strong></a>
-								<strong class="grey--text" v-else>
-									{{ commitData.commit.committer.name }}
-								</strong>
-								<span v-if="!commitData.commit.authoredByCommitter">committed</span>
-							</span>
-
-							<span :title="commitData.commit.committedDate">
-								<RelativeTime :date="commitData.commit.committedDate"></RelativeTime>
-							</span>
-						</v-list-tile-sub-title>
-					</v-list-tile-content>
-
-					<v-list-tile-action>
-						<v-btn :icon="$vuetify.breakpoint.lgAndDown"
-							   color="blue"
-							   flat
-							   round
-							   :href="commitData.commit.url"
-							   :small="$vuetify.breakpoint.lgAndDown"
-							   target="_blank">
-							<v-icon class="hidden-xl-only">link</v-icon>
-							<strong class="hidden-lg-and-down">
-								{{ commitData.commit.abbreviatedOid }}
-							</strong>
-						</v-btn>
-					</v-list-tile-action>
-
-					<v-list-tile-action
-							v-for="(cluster, clusterKey) in commitData.state"
-							:key="clusterKey"
-							:class="{
-								'mr-2': !cluster.name
-							}"
-					>
-						<template v-if="!cluster.name">
-							<v-tooltip
-									v-for="(stage, stageKey) in cluster.stages"
-									:key="stageKey"
-									top
-							>
-								<v-btn
-										slot="activator"
-										icon
-										:href="stage.href"
-										:small="$vuetify.breakpoint.lgAndDown"
-										target="_blank"
-										:class="{
-											'green white--text': 'success' === stage.state,
-											'red white--text': 'failure' === stage.state,
-											'orange white--text': 'in_progress' === stage.state,
-											'grey lighten-3 grey--text': 'idle' === stage.state,
-											'btn--disabled lighten-3': !stage.href,
-											'pulsating': stage.inProgress,
-										}"
-										:data-pulsating="stage.inProgress ? 'true' : 'false'"
-								>
-									<v-icon v-text="stage.data.icon" size="18"></v-icon>
-								</v-btn>
-								<span>{{ stage.tooltip }}</span>
-							</v-tooltip>
-						</template>
-						<v-chip
-								v-else
-								disabled
-								small
-								:class="{
-									'green white--text': 'success' === cluster.state.state,
-									'red white--text': 'failure' === cluster.state.state,
-									'orange white--text': 'in_progress' === cluster.state.state,
-								}"
-						>
-							<strong>{{ cluster.name }}</strong>
-							<v-tooltip
-									v-for="(stage, stageKey) in cluster.stages"
-									:key="stageKey"
-									top
-							>
-								<v-btn
-										slot="activator"
-										icon
-										:small="$vuetify.breakpoint.lgAndDown"
-										:href="stage.href"
-										target="_blank"
-										:class="{
-											'green white--text': 'success' === stage.state,
-											'red white--text': 'failure' === stage.state,
-											'orange white--text': 'in_progress' === stage.state,
-											'grey white--text': 'idle' === stage.state,
-											'btn--disabled lighten-3': !stage.href,
-											'pulsating': stage.inProgress,
-										}"
-										:data-pulsating="stage.inProgress ? 'true' : 'false'"
-										style="margin-left: 8px; margin-right: -13px;"
-								>
-									<v-icon v-text="stage.data.icon"></v-icon>
-								</v-btn>
-								<span>{{ stage.tooltip }}</span>
-							</v-tooltip>
-						</v-chip>
-					</v-list-tile-action>
-
-					<template v-if="!commitData.state">
-						<v-list-tile-action>
-							<em class="grey--text text--lighten-1">no clusters defined</em>
-						</v-list-tile-action>
-					</template>
-				</v-list-tile>
-				<v-divider></v-divider>
-			</v-list>
 		</v-flex>
 	</v-layout>
 </template>
@@ -173,12 +30,13 @@
 <script>
 	import _ from 'lodash';
 	import moment from 'moment';
-	import RelativeTime from './RelativeTime';
 	import {QUERY_COMMITS_HISTORY} from './queries.js';
 	import {getConfig, STATE} from './config.js';
 	import {resetAnimations} from "./helpers";
+	import CommitsList from "./CommitsList";
 
 	export default {
+		name: "RepoView",
 		apollo: {
 			repository: {
 				fetchPolicy: 'no-cache',
@@ -205,7 +63,7 @@
 				}
 			},
 		},
-		components: {RelativeTime},
+		components: {CommitsList},
 		data: () => ({
 			history: [],
 			hasNextPage: false,

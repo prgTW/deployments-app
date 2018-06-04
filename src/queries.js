@@ -17,7 +17,7 @@ export function buildQuery(config) {
                 history: ref(qualifiedName: "refs/heads/<%- baseRef %>") {
                     target {
                         ... on Commit {
-                            history(first: 100) {
+                            history(first: 50) {
                                 edges {
                                     node {
                                         oid

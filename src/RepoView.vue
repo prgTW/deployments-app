@@ -21,7 +21,7 @@
 				<v-subheader :key="date">
 					<v-icon small>access_time</v-icon>&nbsp;{{ date }}
 				</v-subheader>
-				<v-list-tile avatar ripple v-for="(commitData, key) in commitDatas" :key="key">
+				<v-list-tile avatar ripple v-for="commitData in commitDatas" :key="commitData.commit.abbreviatedOid">
 					<v-badge overlap left :color="commitData.commit.signature.isValid ? 'green' : 'red'"
 							 v-if="commitData.commit.signature">
 						<v-icon slot="badge" small color="white" v-if="commitData.commit.signature.isValid">done
@@ -79,20 +79,22 @@
 							   target="_blank">
 							<v-icon class="hidden-xl-only">link</v-icon>
 							<strong class="hidden-lg-and-down">
-								#{{ commitData.commit.abbreviatedOid }}
+								{{ commitData.commit.abbreviatedOid }}
 							</strong>
 						</v-btn>
 					</v-list-tile-action>
 
 					<v-list-tile-action
-							v-for="(cluster) in commitData.state"
+							v-for="(cluster, clusterKey) in commitData.state"
+							:key="clusterKey"
 							:class="{
 								'mr-2': !cluster.name
 							}"
 					>
 						<template v-if="!cluster.name">
 							<v-tooltip
-									v-for="(stage) in cluster.stages"
+									v-for="(stage, stageKey) in cluster.stages"
+									:key="stageKey"
 									top
 							>
 								<v-btn
@@ -102,13 +104,14 @@
 										:small="$vuetify.breakpoint.lgAndDown"
 										target="_blank"
 										:class="{
-										'green white--text': 'success' === stage.state,
-										'red white--text': 'failure' === stage.state,
-										'orange white--text': 'in_progress' === stage.state,
-										'grey lighten-3 grey--text': 'idle' === stage.state,
-										'btn--disabled lighten-3': !stage.href,
-										'pulsating': stage.inProgress,
-									}"
+											'green white--text': 'success' === stage.state,
+											'red white--text': 'failure' === stage.state,
+											'orange white--text': 'in_progress' === stage.state,
+											'grey lighten-3 grey--text': 'idle' === stage.state,
+											'btn--disabled lighten-3': !stage.href,
+											'pulsating': stage.inProgress,
+										}"
+										:data-pulsating="stage.inProgress ? 'true' : 'false'"
 								>
 									<v-icon v-text="stage.data.icon" size="18"></v-icon>
 								</v-btn>
@@ -127,8 +130,9 @@
 						>
 							<strong>{{ cluster.name }}</strong>
 							<v-tooltip
+									v-for="(stage, stageKey) in cluster.stages"
+									:key="stageKey"
 									top
-									v-for="(stage) in cluster.stages"
 							>
 								<v-btn
 										slot="activator"
@@ -137,13 +141,14 @@
 										:href="stage.href"
 										target="_blank"
 										:class="{
-										'green white--text': 'success' === stage.state,
-										'red white--text': 'failure' === stage.state,
-										'orange white--text': 'in_progress' === stage.state,
-										'grey white--text': 'idle' === stage.state,
-										'btn--disabled lighten-3': !stage.href,
-										'pulsating': stage.inProgress,
-									}"
+											'green white--text': 'success' === stage.state,
+											'red white--text': 'failure' === stage.state,
+											'orange white--text': 'in_progress' === stage.state,
+											'grey white--text': 'idle' === stage.state,
+											'btn--disabled lighten-3': !stage.href,
+											'pulsating': stage.inProgress,
+										}"
+										:data-pulsating="stage.inProgress ? 'true' : 'false'"
 										style="margin-left: 8px; margin-right: -13px;"
 								>
 									<v-icon v-text="stage.data.icon"></v-icon>

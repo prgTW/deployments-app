@@ -8,8 +8,8 @@
 		</v-layout>
 		<v-list-tile
 				:to="{name: 'repo_view', params: {owner: repository.node.owner.login, repo: repository.node.name, branch: repository.node.defaultBranchRef.name}}"
-				v-for="(repository, i) in repositories"
-				:key="`all-${i}`"
+				v-for="repository in repositories"
+				:key="`${repository.node.owner.login}-${repository.node.name}`"
 		>
 			<v-list-tile-content>
 				<v-list-tile-title>

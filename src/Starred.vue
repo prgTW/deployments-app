@@ -4,12 +4,13 @@
 				dense
 				subheader
 				v-for="(repositories, owner) in groupedStarredRepositories"
+				:key="owner"
 		>
 			<v-subheader>{{ owner }}</v-subheader>
 			<v-list-tile
 					:to="{name: 'repo_view', params: {owner: repository.owner, repo: repository.name, branch: repository.branch}}"
-					v-for="(repository, i) in repositories"
-					:key="`starred-${i}`"
+					v-for="repository in repositories"
+					:key="`${repository.owner}-${repository.name}`"
 			>
 				<v-list-tile-content>
 					<v-list-tile-title>

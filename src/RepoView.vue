@@ -12,9 +12,9 @@
 			>
 				<small>RELOAD</small>
 			</v-btn>
-			<v-snackbar bottom center v-model="isLoading" color="info">
-				<strong>Loading</strong>
-			</v-snackbar>
+
+
+
 
 			<CommitsList
 					v-for="(commits, date) in commitsByDate"

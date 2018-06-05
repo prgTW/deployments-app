@@ -18,6 +18,7 @@
 						'grey lighten-3 grey--text': 'idle' === stage.state,
 						'btn--disabled lighten-3': !stage.href,
 						'pulsating': stage.inProgress,
+						'mx-1': true,
 					}"
 			>
 				<v-icon v-text="stage.data.icon" size="18"></v-icon>

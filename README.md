@@ -10,6 +10,11 @@ Made with ❤️ and dozens of 🤬
 # install dependencies
 yarn install
 
+# create application entrypoint from the template
+cp index.html.dist index.html
+
+# edit APP_ACCESS_TOKEN in index.html
+
 # serve with hot reload at localhost:8080
 yarn run dev
 

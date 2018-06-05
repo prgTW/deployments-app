@@ -13,9 +13,6 @@
 				<small>RELOAD</small>
 			</v-btn>
 
-
-
-
 			<CommitsList
 					v-for="(commits, date) in commitsByDate"
 					:key="date"

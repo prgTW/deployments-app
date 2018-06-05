@@ -1,5 +1,5 @@
 <template>
-	<div v-if="commitData.state">
+	<div v-if="commitData.state" class="no-wrap">
 		<template v-for="(cluster, i) in commitData.state">
 			<NamedCluster v-if="cluster.name" :key="i" :cluster="cluster"/>
 			<UnnamedCluster v-else :key="i" :cluster="cluster"/>

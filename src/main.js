@@ -27,7 +27,9 @@ if ('production' === APP_ENVIRONMENT) {
 		.install();
 }
 
-const httpLink = new HttpLink({
+const httpLink = new HttpLink('production' === APP_ENVIRONMENT ? {
+	uri: 'https://deployments.docplanner.io/github-proxy/graphql',
+} : {
 	uri: 'https://api.github.com/graphql',
 	headers: {
 		Authorization: 'Bearer ' + APP_ACCESS_TOKEN,

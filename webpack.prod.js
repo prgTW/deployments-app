@@ -30,8 +30,8 @@ module.exports = merge(common, {
   plugins: [
     new CleanWebpackPlugin('./dist'),
     new HtmlWebpackPlugin({
-      filename: 'index.php',
-      template: './index.php',
+      filename: 'index.html',
+      template: './index.html.prod',
       inject: true,
       minify: {
         removeComments: true,

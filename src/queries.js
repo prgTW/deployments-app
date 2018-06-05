@@ -116,14 +116,6 @@ export const QUERY_COMMITS_HISTORY = gql`
     }
 `;
 
-export const QUERY_VIEWER = gql`
-    query {
-        viewer {
-            avatarUrl
-        }
-    }
-`;
-
 export const QUERY_ORGANISATION_REPOSITORIES = gql`
     query ($owner: String!) {
         organization(login: $owner) {

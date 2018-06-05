@@ -25,8 +25,6 @@
 				<v-icon :class="{'grey--text': isDark}">highlight</v-icon>
 			</v-btn>
 
-			<avatar></avatar>
-
 		</v-toolbar>
 		<v-content>
 			<v-container fluid fill-height>
@@ -39,13 +37,12 @@
 </template>
 
 <script>
-	import Avatar from "./Avatar";
 	import Sidebar from "./Sidebar";
 	import Starred from "./Starred";
 	import {mapGetters, mapMutations} from 'vuex';
 
 	export default {
-		components: {Sidebar, Starred, Avatar},
+		components: {Sidebar, Starred},
 		data: () => ({
 			dialog: false,
 			drawer: null,

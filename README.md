@@ -1,18 +1,18 @@
-# deployments-dashboard-app
+# Deployments dashboard
 
-> Dashboard for DocPlanner project deployments
+![image](https://user-images.githubusercontent.com/203249/41007702-6001c5ea-6927-11e8-9aca-ea2de92c0071.png)
+
+Made with ❤️ and dozens of 🤬
 
 ## Build Setup
 
 ``` bash
 # install dependencies
-npm install
+yarn install
 
 # serve with hot reload at localhost:8080
-npm run dev
+yarn run dev
 
 # build for production with minification
-npm run build
+yarn run build
 ```
-
-For detailed explanation on how things work, consult the [docs for vue-loader](http://vuejs.github.io/vue-loader).

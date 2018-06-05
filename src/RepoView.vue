@@ -8,9 +8,10 @@
 					fixed
 					color="primary"
 					:loading="isLoading"
+					:disabled="isLoading || refreshTimeout > (refreshInterval / 3)"
 					@click.stop="fetchCommits"
 			>
-				<small>RELOAD</small>
+				{{ refreshTimeoutNice }}
 			</v-btn>
 
 			<CommitsList
@@ -65,7 +66,8 @@
 			history: [],
 			hasNextPage: false,
 			isLoading: true,
-			refreshInterval: 60 * 1000,
+			refreshInterval: 180,
+			refreshTimeout: 180,
 			refreshIntervalHandle: undefined,
 		}),
 		computed: {
@@ -124,6 +126,9 @@
 
 				return _.groupBy(computedHistory, commitData => moment(commitData.commit.committedDate).format('YYYY-MM-DD'))
 			},
+			refreshTimeoutNice: function () {
+				return moment(this.refreshTimeout * 1000).format('mm:ss');
+			}
 		},
 		methods: {
 			fetchCommits: function () {
@@ -137,10 +142,14 @@
 				if (!queueNext) {
 					return;
 				}
+				this.refreshTimeout = this.refreshInterval;
 				this.refreshIntervalHandle = setInterval(() => {
-					this.resetTimer(false)
-					this.fetchCommits()
-				}, this.refreshInterval)
+					--this.refreshTimeout;
+					if (this.refreshTimeout <= 0) {
+						this.resetTimer(false)
+						this.fetchCommits()
+					}
+				}, 1000)
 			},
 		},
 		mounted: function () {

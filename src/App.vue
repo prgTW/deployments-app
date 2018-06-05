@@ -33,6 +33,15 @@
 				</v-layout>
 			</v-container>
 		</v-content>
+		<v-footer app class="grey lighten-4 hidden-md-and-down">
+			<v-layout row wrap justify-center>
+				<v-flex xs12 text-xs-center grey--text>
+					<strong>
+						Made with ❤️ and dozens of 🤬 for <a href="https://www.docplanner.com" target="_blank">DocPlanner</a>
+					</strong>
+				</v-flex>
+			</v-layout>
+		</v-footer>
 	</v-app>
 </template>
 

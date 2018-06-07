@@ -198,6 +198,9 @@ export const CONFIG = {
 		]),
 	]),
 	'DocPlanner/metrix-app': createRepo('develop', [
+		createCluster('', calculateClusterStateFromStageStates, [
+			createStage('develop', createIcon('bug_report', calculateStateFromStatusCheck('ci/circleci'))),
+		]),
 		createCluster('PROD', calculateClusterStateFromStageStates, [
 			createStage('master', createIcon('public', calculateStateFromStatusCheck('buddy/pipeline/production'))),
 		]),

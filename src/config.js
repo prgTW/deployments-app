@@ -197,6 +197,11 @@ export const CONFIG = {
 			createStage('master', createIcon('public', calculateStateFromStatusCheck('buddy/pipeline/production'))),
 		]),
 	]),
+	'DocPlanner/metrix-app': createRepo('develop', [
+		createCluster('PROD', calculateClusterStateFromStageStates, [
+			createStage('master', createIcon('public', calculateStateFromStatusCheck('buddy/pipeline/production'))),
+		]),
+	]),
 	'DocPlanner/monolith-app': createRepo('develop', [
 		createCluster('', calculateClusterStateFromStageStates, [
 			createStage('develop', createIcon('bug_report', calculateStateFromStatusCheck('ci/circleci'))),

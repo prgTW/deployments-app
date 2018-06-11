@@ -6,6 +6,17 @@
 				app
 				v-model="drawer"
 		>
+			<v-list dense subheader>
+				<v-subheader>Tools</v-subheader>
+				<v-list-tile :to="{name: 'healthchecks'}">
+					<v-list-tile-content>
+						<v-list-tile-title>
+							Healthchecks
+						</v-list-tile-title>
+					</v-list-tile-content>
+				</v-list-tile>
+			</v-list>
+			<v-divider/>
 			<starred></starred>
 			<sidebar owner="DocPlanner"></sidebar>
 		</v-navigation-drawer>

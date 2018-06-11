@@ -5,6 +5,7 @@ import Vuetify from 'vuetify'
 import 'babel-polyfill'
 import App from './App.vue'
 import Dashboard from './Dashboard.vue'
+import Healthchecks from './Healthchecks.vue'
 import RepoView from './RepoView.vue'
 
 import {ApolloClient} from 'apollo-client'
@@ -55,6 +56,11 @@ const routes = [
 		name: 'dashboard',
 		path: '/',
 		component: Dashboard
+	},
+	{
+		name: 'healthchecks',
+		path: '/healthchecks',
+		component: Healthchecks
 	},
 	{
 		name: 'repo_view',

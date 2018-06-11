@@ -8,7 +8,7 @@
 					fixed
 					color="primary"
 					:loading="isLoading"
-					:disabled="isLoading || refreshTimeout > (refreshInterval / 3)"
+					:disabled="isLoading || refreshTimeout > (refreshInterval * 2 / 3)"
 					@click.stop="fetchCommits"
 			>
 				{{ refreshTimeoutNice }}

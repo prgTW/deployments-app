@@ -1,5 +1,5 @@
 <template>
-	<v-list two-line>
+	<v-list dense two-line>
 		<template v-for="(data, i) in filteredChecks.slice(0, this.visibleCount)">
 			<v-list-tile :key="i">
 				<v-list-tile-avatar>

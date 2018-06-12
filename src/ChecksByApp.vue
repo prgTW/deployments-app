@@ -73,7 +73,11 @@
 							_.countBy(checks, check => check.status),
 						)
 					}))
-					.sortBy(data, ({appName}) => appName)
+					.sortBy([
+						(checkData) => -checkData.stats.down,
+						(checkData) => -checkData.stats.grace,
+						(checkData) => checkData.appName
+					])
 					.value()
 				data = _.keyBy(data, ({appName}) => appName)
 

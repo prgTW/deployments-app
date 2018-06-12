@@ -15,7 +15,7 @@
 							'px-2 py-1': true,
 						}"
 					>
-						<strong>{{ tagName }}</strong>
+						<span class="headline">{{ tagName }}</span>
 						<v-spacer></v-spacer>
 						<Stats :stats="data.stats" :statuses="['down', 'grace', 'paused']"/>
 					</v-card-title>

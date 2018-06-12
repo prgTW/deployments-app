@@ -1,5 +1,6 @@
 <template>
-	<v-layout row justify-center>
+	<ProgressLine v-if="isLoading && 0 === checks.length" />
+	<v-layout row justify-center v-else>
 		<v-flex xs12>
 			<v-btn
 					fab
@@ -46,14 +47,15 @@
 <script>
 	import axios from 'axios';
 	import ChecksByApp from "./ChecksByApp";
+	import ProgressLine from "./ProgressLine";
 	import moment from 'moment';
 
 	export default {
 		name: "Healthchecks",
-		components: {ChecksByApp},
+		components: {ChecksByApp, ProgressLine},
 		data: () => ({
 			checks: [],
-			isLoading: true,
+			isLoading: false,
 			refreshInterval: 180,
 			refreshTimeout: 180,
 			refreshIntervalHandle: undefined,

@@ -1,11 +1,7 @@
 <template>
 	<v-list dense subheader>
 		<v-subheader>{{ owner }}</v-subheader>
-		<v-layout row justify-center v-if="$apollo.queries.organization.loading">
-			<v-flex xs10>
-				<v-progress-linear indeterminate color="grey"></v-progress-linear>
-			</v-flex>
-		</v-layout>
+		<ProgressLine v-if="$apollo.queries.organization.loading" />
 		<v-list-tile
 				:to="{name: 'repo_view', params: {owner: repository.node.owner.login, repo: repository.node.name, branch: repository.node.defaultBranchRef.name}}"
 				v-for="repository in repositories"
@@ -43,8 +39,10 @@
 	import {QUERY_ORGANISATION_REPOSITORIES} from "./queries";
 	import _ from 'lodash';
 	import {mapGetters, mapMutations} from 'vuex'
+	import ProgressLine from "./ProgressLine";
 
 	export default {
+		components: {ProgressLine},
 		apollo: {
 			organization: {
 				fetchPolicy: 'no-cache',

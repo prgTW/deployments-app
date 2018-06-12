@@ -1,5 +1,6 @@
 <template>
-	<v-layout row justify-center>
+	<ProgressLine v-if="isLoading && 0 === history.length" />
+	<v-layout row justify-center v-else>
 		<v-flex xs12 xl10>
 			<v-btn
 					fab
@@ -32,6 +33,7 @@
 	import {getConfig, STATE} from './config.js';
 	import {resetAnimations} from "./helpers";
 	import CommitsList from "./CommitsList";
+	import ProgressLine from "./ProgressLine";
 
 	export default {
 		name: "RepoView",
@@ -61,11 +63,11 @@
 				}
 			},
 		},
-		components: {CommitsList},
+		components: {CommitsList, ProgressLine},
 		data: () => ({
 			history: [],
 			hasNextPage: false,
-			isLoading: true,
+			isLoading: false,
 			refreshInterval: 180,
 			refreshTimeout: 180,
 			refreshIntervalHandle: undefined,

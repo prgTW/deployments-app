@@ -6,24 +6,30 @@
 					:key="appName"
 					:class="{
 						'mb-3': true,
-						'grey darken-1': isDark
+						'lighten-4': !isDark,
+						'darken-4': isDark,
+						'red white--text': data.stats.down,
+						'orange white--text': !data.stats.down && data.stats.grace,
+						'green white--text': !data.stats.down && !data.stats.grace,
 					}"
 			>
 				<v-card-title
 						:class="{
-						'grey darken-2': isDark,
-						'grey lighten-3': !isDark,
-						'pa-2': true,
-					}"
+							'pa-2': true,
+							'red darken-3 white--text': data.stats.down,
+							'orange darken-3 white--text': !data.stats.down && data.stats.grace,
+							'green darken-3 white--text': !data.stats.down && !data.stats.grace,
+						}"
 				>
 					<strong>{{ appName }}</strong>
 					<v-spacer/>
 					<Stats :stats="data.stats"/>
 				</v-card-title>
 
-				<v-divider/>
-
-				<ChecksByTag :checks="data.checks" :detailed="detailed"/>
+				<template v-if="data.stats.down + data.stats.grace + data.stats.paused">
+					<v-divider/>
+					<ChecksByTag :checks="data.checks" :detailed="detailed"/>
+				</template>
 			</v-card>
 		</v-flex>
 	</v-layout>
@@ -63,7 +69,7 @@
 						appName: appName,
 						checks: checks,
 						stats: _.extend({},
-							{new: 0, paused: 0, up: 0, grace: 0, down: 0},
+							{up: 0, down: 0, grace: 0, paused: 0, new: 0},
 							_.countBy(checks, check => check.status),
 						)
 					}))

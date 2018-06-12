@@ -1,7 +1,7 @@
 <template>
 	<v-list dense subheader>
 		<v-subheader>{{ owner }}</v-subheader>
-		<ProgressLine v-if="$apollo.queries.organization.loading" />
+		<Centered v-if="isLoading"/>
 		<v-list-tile
 				:to="{name: 'repo_view', params: {owner: repository.node.owner.login, repo: repository.node.name, branch: repository.node.defaultBranchRef.name}}"
 				v-for="repository in repositories"
@@ -39,10 +39,10 @@
 	import {QUERY_ORGANISATION_REPOSITORIES} from "./queries";
 	import _ from 'lodash';
 	import {mapGetters, mapMutations} from 'vuex'
-	import ProgressLine from "./ProgressLine";
+	import Centered from "./Centered";
 
 	export default {
-		components: {ProgressLine},
+		components: {Centered},
 		apollo: {
 			organization: {
 				fetchPolicy: 'no-cache',

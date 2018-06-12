@@ -17,11 +17,11 @@
 					>
 						<strong>{{ tagName }}</strong>
 						<v-spacer></v-spacer>
-						<Stats :stats="data.stats" :types="['down', 'grace', 'paused']"/>
+						<Stats :stats="data.stats" :statuses="['down', 'grace', 'paused']"/>
 					</v-card-title>
 					<v-divider v-if="data.checks"/>
 
-					<Checks :tagName="tagName" :checks="data.checks"/>
+					<Checks :tagName="tagName" :checks="data.checks" :statuses="['down', 'grace', 'paused']"/>
 				</v-card>
 			</v-flex>
 		</v-layout>
@@ -66,7 +66,7 @@
 						tagName: tagName,
 						checks: checks,
 						stats: _.extend({},
-							{new: 0, paused: 0, up: 0, grace: 0, down: 0},
+							{up: 0, down: 0, grace: 0, paused: 0, new: 0},
 							_.countBy(checks, check => check.status),
 						)
 					}))

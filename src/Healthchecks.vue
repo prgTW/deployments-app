@@ -1,58 +1,62 @@
 <template>
-	<ProgressLine v-if="isLoading && 0 === checks.length" />
+	<Centered v-if="isLoading && 0 === checks.length"/>
 	<v-layout row justify-center v-else>
-		<v-flex xs12>
-			<v-btn
-					fab
-					bottom
-					right
-					fixed
-					color="primary"
-					:loading="isLoading"
-					:disabled="isLoading || refreshTimeout > (refreshInterval * 2 / 3)"
-					@click.stop="fetch"
-			>
-				{{ refreshTimeoutNice }}
-			</v-btn>
+		<v-btn
+				fab
+				bottom
+				right
+				fixed
+				color="primary"
+				:loading="isLoading"
 
-			<!--<v-container fluid>-->
-			<!--<v-layout wrap justify-space-around>-->
-			<!--<v-flex xs4>-->
-			<!--<v-select-->
-			<!--v-model="appsFilter"-->
-			<!--:items="allApps"-->
-			<!--label="Choose applications"-->
-			<!--multiple-->
-			<!--tags-->
-			<!--&gt;</v-select>-->
-			<!--</v-flex>-->
-			<!--<v-flex xs4>-->
-			<!--<v-select-->
-			<!--v-model="localesFilter"-->
-			<!--:items="allLocales"-->
-			<!--label="Choose locales"-->
-			<!--multiple-->
-			<!--tags-->
-			<!--&gt;</v-select>-->
-			<!--</v-flex>-->
-			<!--</v-layout>-->
-			<!--</v-container>-->
+				@click.stop="fetch"
+		>
+			{{ refreshTimeoutNice }}
+		</v-btn>
 
-			<ChecksByApp :checks="checks" :detailed="false"/>
+		<Centered v-if="checks.length && allChecksOk">
+			<v-alert type="success" :value="true">ALL CHECKS ARE UP!</v-alert>
+		</Centered>
+		<template v-else>
+			<v-flex xs12>
+				<!--<v-container fluid>-->
+				<!--<v-layout wrap justify-space-around>-->
+				<!--<v-flex xs4>-->
+				<!--<v-select-->
+				<!--v-model="appsFilter"-->
+				<!--:items="allApps"-->
+				<!--label="Choose applications"-->
+				<!--multiple-->
+				<!--tags-->
+				<!--&gt;</v-select>-->
+				<!--</v-flex>-->
+				<!--<v-flex xs4>-->
+				<!--<v-select-->
+				<!--v-model="localesFilter"-->
+				<!--:items="allLocales"-->
+				<!--label="Choose locales"-->
+				<!--multiple-->
+				<!--tags-->
+				<!--&gt;</v-select>-->
+				<!--</v-flex>-->
+				<!--</v-layout>-->
+				<!--</v-container>-->
 
-		</v-flex>
+				<ChecksByApp :checks="checks" :detailed="false"/>
+			</v-flex>
+		</template>
 	</v-layout>
 </template>
 
 <script>
 	import axios from 'axios';
 	import ChecksByApp from "./ChecksByApp";
-	import ProgressLine from "./ProgressLine";
+	import Centered from "./Centered";
 	import moment from 'moment';
 
 	export default {
 		name: "Healthchecks",
-		components: {ChecksByApp, ProgressLine},
+		components: {ChecksByApp, Centered},
 		data: () => ({
 			checks: [],
 			isLoading: false,
@@ -78,6 +82,9 @@
 			// allLocales: function () {
 			// 	return _.filter(this.allTags, app => _.startsWith(app, 'app-'))
 			// },
+			allChecksOk: function () {
+				return false === _.some(this.checks, check => 'up' !== check.status)
+			},
 			refreshTimeoutNice: function () {
 				return moment(this.refreshTimeout * 1000).format('mm:ss');
 			}

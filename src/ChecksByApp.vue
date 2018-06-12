@@ -1,36 +1,82 @@
 <template>
-		<v-expansion-panel>
-			<v-expansion-panel-content
-				v-for="(data, appName) in dataByApp"
-				:key="appName"
-				:class="{
-					'white--text': true,
-					'red lighten-1': data.stats.down > 0,
-					'yellow': 0 === data.stats.down && data.stats.grace > 0,
-					'green lighten-1': 0 === data.stats.down && 0 === data.stats.grace,
-				}"
+	<v-layout v-if="!detailed" row wrap>
+		<v-flex xs12>
+			<v-card
+					v-for="(data, appName) in checksByApp"
+					:key="appName"
+					:class="{
+						'mb-3': true,
+						'grey darken-1': isDark
+					}"
 			>
-				<div slot="header">
-					<v-layout row justify-space-around>
-						<v-flex xs9>
-							<strong>{{ appName }}</strong>
-						</v-flex>
-						<v-flex xs2>{{ data.stats.up }} / {{ data.stats.grace }} / {{ data.stats.down }}</v-flex>
-					</v-layout>
-				</div>
-				<v-card>
-					<v-card-text>
-						<pre>{{ data.checks }}</pre>
-					</v-card-text>
-				</v-card>
-			</v-expansion-panel-content>
-		</v-expansion-panel>
+				<v-card-title
+						:class="{
+						'grey darken-2': isDark,
+						'grey lighten-3': !isDark,
+						'pa-2': true,
+					}"
+				>
+					<strong>{{ appName }}</strong>
+					<v-spacer/>
+					<Stats :stats="data.stats"/>
+				</v-card-title>
+
+				<v-divider/>
+
+				<ChecksByTag :checks="data.checks" :detailed="detailed"/>
+			</v-card>
+		</v-flex>
+	</v-layout>
 </template>
 <script>
+	import ChecksByTag from "./ChecksByTag";
+	import {mapGetters} from 'vuex';
+	import Stats from "./Stats";
+
 	export default {
 		name: 'ChecksByApp',
+		components: {Stats, ChecksByTag},
+		data: () => ({}),
+		computed: {
+			...mapGetters([
+				'isDark',
+			]),
+			checksByApp: function () {
+				let data = {};
+
+				_.forEach(this.checks, check => {
+					const tags = check.tags.split(' ')
+					let apps = _.filter(tags, tag => _.endsWith(tag, '-app'))
+
+					if (0 === apps.length) {
+						apps = ['_other'];
+					}
+					_.forEach(apps, app => {
+						data[app] = data[app] || [];
+						data[app].push(check)
+					})
+				});
+
+				data = _
+					.chain(data)
+					.mapValues((checks, appName) => ({
+						appName: appName,
+						checks: checks,
+						stats: _.extend({},
+							{new: 0, paused: 0, up: 0, grace: 0, down: 0},
+							_.countBy(checks, check => check.status),
+						)
+					}))
+					.sortBy(data, ({appName}) => appName)
+					.value()
+				data = _.keyBy(data, ({appName}) => appName)
+
+				return data
+			},
+		},
 		props: {
-			dataByApp: Object,
+			checks: Array,
+			detailed: Boolean
 		}
 	}
 </script>

@@ -14,14 +14,36 @@
 				{{ refreshTimeoutNice }}
 			</v-btn>
 
-			<ChecksByApp :dataByApp="dataByApp"/>
+			<!--<v-container fluid>-->
+			<!--<v-layout wrap justify-space-around>-->
+			<!--<v-flex xs4>-->
+			<!--<v-select-->
+			<!--v-model="appsFilter"-->
+			<!--:items="allApps"-->
+			<!--label="Choose applications"-->
+			<!--multiple-->
+			<!--tags-->
+			<!--&gt;</v-select>-->
+			<!--</v-flex>-->
+			<!--<v-flex xs4>-->
+			<!--<v-select-->
+			<!--v-model="localesFilter"-->
+			<!--:items="allLocales"-->
+			<!--label="Choose locales"-->
+			<!--multiple-->
+			<!--tags-->
+			<!--&gt;</v-select>-->
+			<!--</v-flex>-->
+			<!--</v-layout>-->
+			<!--</v-container>-->
+
+			<ChecksByApp :checks="checks" :detailed="false"/>
 
 		</v-flex>
 	</v-layout>
 </template>
 
 <script>
-	import _ from 'lodash';
 	import axios from 'axios';
 	import ChecksByApp from "./ChecksByApp";
 	import moment from 'moment';
@@ -35,6 +57,8 @@
 			refreshInterval: 180,
 			refreshTimeout: 180,
 			refreshIntervalHandle: undefined,
+			appsFilter: [],
+			localesFilter: [],
 		}),
 		computed: {
 			// allTags: function () {
@@ -46,39 +70,12 @@
 			// 		.sortedUniq()
 			// 		.value();
 			// },
-			dataByApp: function () {
-				let data = {};
-
-				_.forEach(this.checks, check => {
-					const tags = check.tags.split(' ')
-					let apps = _.filter(tags, tag => _.endsWith(tag, '-app'))
-					// let locales = _.filter(tags, tag => _.startsWith(tag, 'app-'))
-
-					if (0 === apps.length) {
-						apps = ['_other'];
-					}
-					_.forEach(apps, app => {
-						data[app] = data[app] || [];
-						data[app].push(check)
-					})
-				});
-
-				data = _
-					.chain(data)
-					.mapValues((checks, appName) => ({
-						appName: appName,
-						checks: checks,
-						stats: _.extend({},
-							{new: 0, paused: 0, up: 0, grace: 0, down: 0},
-							_.countBy(checks, check => check.status),
-						)
-					}))
-					.sortBy(data, ({appName}) => appName)
-					.value()
-				data = _.keyBy(data, ({appName}) => appName)
-
-				return data
-			},
+			// allApps: function () {
+			// 	return _.filter(this.allTags, app => _.endsWith(app, '-app'))
+			// },
+			// allLocales: function () {
+			// 	return _.filter(this.allTags, app => _.startsWith(app, 'app-'))
+			// },
 			refreshTimeoutNice: function () {
 				return moment(this.refreshTimeout * 1000).format('mm:ss');
 			}

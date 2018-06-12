@@ -18,7 +18,7 @@
 								'text--lighten-1': !isDark,
 							}"
 					>
-						{{ data.locales.join(', ') }}
+						{{ data.tags.join(' ') }}
 					</v-list-tile-sub-title>
 				</v-list-tile-content>
 			</v-list-tile>
@@ -78,13 +78,16 @@
 								{up: 0, down: 0, grace: 0, paused: 0, new: 0},
 								_.countBy(checks, check => check.status),
 							),
-							locales: _
+							tags: _
 								.chain(checks)
 								.map(check => check.tags)
 								.map(tag => _.split(tag, ' '))
 								.flatten()
 								.filter(tag => tag !== this.tagName)
 								.filter(tag => !_.endsWith(tag, '-app'))
+								.map(tag => {
+									return _.startsWith(tag, 'app-') ? _.toUpper(tag.substr(4)) : tag
+								})
 								.sort()
 								.sortedUniq()
 								.value()

@@ -10,7 +10,8 @@
 						'darken-4': isDark,
 						'red white--text': data.stats.down,
 						'orange white--text': !data.stats.down && data.stats.grace,
-						'green white--text': !data.stats.down && !data.stats.grace,
+						'yellow white--text': !data.stats.down && !data.stats.grace && (data.stats.paused || data.stats.new),
+						'green white--text': !data.stats.down && !data.stats.grace && !data.stats.paused && !data.stats.new,
 					}"
 			>
 				<v-card-title
@@ -18,7 +19,8 @@
 							'pa-2': true,
 							'red darken-3 white--text': data.stats.down,
 							'orange darken-3 white--text': !data.stats.down && data.stats.grace,
-							'green darken-3 white--text': !data.stats.down && !data.stats.grace,
+							'yellow darken-3 white--text': !data.stats.down && !data.stats.grace && (data.stats.paused || data.stats.new),
+							'green darken-3 white--text': !data.stats.down && !data.stats.grace && !data.stats.paused && !data.stats.new,
 						}"
 				>
 					<span class="headline"><strong>{{ appName }}</strong></span>

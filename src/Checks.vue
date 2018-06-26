@@ -19,7 +19,7 @@
 							}"
 					>
 						<template v-for="tagData in data.tags">
-							<span
+							<strong
 									:key="tagData.tagName"
 									:class="{
 										'text-xs-lighten-1 red--text': tagData.stats.down > 0,
@@ -27,7 +27,7 @@
 									}"
 							>
 								{{ tagData.tagName }}
-							</span>
+							</strong>
 						</template>
 					</v-list-tile-sub-title>
 				</v-list-tile-content>

@@ -3,6 +3,7 @@
 		<v-layout row wrap>
 			<v-flex
 					v-for="(data, tagName) in checksByTag"
+					v-if="data.stats.down + data.stats.grace + data.stats.paused"
 					:key="tagName"
 					d-flex
 					xs12 sm6 md4 xl3

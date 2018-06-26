@@ -21,7 +21,7 @@
 							'green darken-3 white--text': !data.stats.down && !data.stats.grace,
 						}"
 				>
-					<span class="headline">{{ appName }}</span>
+					<span class="headline"><strong>{{ appName }}</strong></span>
 					<v-spacer/>
 					<Stats :stats="data.stats"/>
 				</v-card-title>

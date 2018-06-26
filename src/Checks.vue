@@ -33,8 +33,8 @@
 				</v-list-tile-content>
 			</v-list-tile>
 		</template>
-		<v-list-tile :key="'__more'" v-if="filteredChecks.length > this.minVisible">
-			<v-list-tile-content>
+		<v-list-tile key="__more" v-if="filteredChecks.length > this.minVisible">
+			<v-list-tile-content class="text-xs-right">
 				<v-list-tile-sub-title>
 					<a href="#" @click.prevent="limit = !limit">
 						<template v-if="limit">

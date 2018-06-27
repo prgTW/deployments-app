@@ -7,6 +7,7 @@
 					'green white--text': 'success' === cluster.state.state,
 					'red white--text': 'failure' === cluster.state.state,
 					'orange white--text': 'in_progress' === cluster.state.state,
+					'grey darken-2 white--text': isDark && 'idle' === cluster.state.state,
 				}"
 		>
 			<strong>{{ cluster.name }}</strong>
@@ -25,7 +26,8 @@
 							'green white--text': 'success' === stage.state,
 							'red white--text': 'failure' === stage.state,
 							'orange white--text': 'in_progress' === stage.state,
-							'grey white--text': 'idle' === stage.state,
+							'grey white--text': !isDark && 'idle' === stage.state,
+							'grey darken-1 white--text': isDark && 'idle' === stage.state,
 							'btn--disabled lighten-3': !stage.href,
 							'pulsating': stage.inProgress,
 						}"
@@ -40,8 +42,15 @@
 </template>
 
 <script>
+	import {mapGetters} from 'vuex';
+
 	export default {
 		name: "NamedCluster",
+		computed: {
+			...mapGetters([
+				'isDark',
+			]),
+		},
 		props: {
 			cluster: Object,
 		}

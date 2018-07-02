@@ -23,13 +23,13 @@
 							'green darken-3 white--text': !data.stats.down && !data.stats.grace && !data.stats.paused && !data.stats.new,
 						}"
 				>
-					<span class="headline"><strong>{{ appName }}</strong></span>
+					<span class="title">{{ appName }}</span>
 					<v-spacer/>
 					<Stats :stats="data.stats"/>
 				</v-card-title>
 
 				<template v-if="data.stats.down + data.stats.grace + data.stats.paused">
-					<v-divider/>
+					<v-divider v-if="data.checks"/>
 					<ChecksByTag :checks="data.checks" :detailed="detailed"/>
 				</template>
 			</v-card>

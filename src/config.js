@@ -144,10 +144,9 @@ export const CONFIG = {
 		]),
 	]),
 	'DocPlanner/crm-app': createRepo('develop', [
-		createCluster('K1', calculateClusterStateFromStageStates, [
+		createCluster('PROD', calculateClusterStateFromStageStates, [
+			createStage('develop', createIcon('settings', calculateStateFromStatusCheck('buddy/pipeline/production'))),
 			createStage('develop', createIcon('public', calculateStateFromStatusCheck('buddy/pipeline/production-k1'))),
-		]),
-		createCluster('K2', calculateClusterStateFromStageStates, [
 			createStage('develop', createIcon('public', calculateStateFromStatusCheck('buddy/pipeline/production-k2'))),
 		]),
 	]),

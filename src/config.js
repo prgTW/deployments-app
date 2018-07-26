@@ -242,12 +242,14 @@ export const CONFIG = {
 		createCluster('', calculateClusterStateFromStageStates, [
 			createStage('develop', createIcon('bug_report', calculateStateFromStatusCheck('buddy/pipeline/Test & push from develop to staging'))),
 		]),
-		createCluster('K1', calculateClusterStateFromStageStates, [
+		createCluster('STAG', calculateClusterStateFromStageStates, [
+			createStage('staging', createIcon('settings', calculateStateFromStatusCheck('buddy/pipeline/staging'))),
 			createStage('staging', createIcon('business', calculateStateFromStatusCheck('buddy/pipeline/staging-k1'))),
-			createStage('master', createIcon('public', calculateStateFromStatusCheck('buddy/pipeline/production-k1'))),
-		]),
-		createCluster('K2', calculateClusterStateFromStageStates, [
 			createStage('staging', createIcon('business', calculateStateFromStatusCheck('buddy/pipeline/staging-k2'))),
+		]),
+		createCluster('PROD', calculateClusterStateFromStageStates, [
+			createStage('master', createIcon('settings', calculateStateFromStatusCheck('buddy/pipeline/production'))),
+			createStage('master', createIcon('public', calculateStateFromStatusCheck('buddy/pipeline/production-k1'))),
 			createStage('master', createIcon('public', calculateStateFromStatusCheck('buddy/pipeline/production-k2'))),
 		]),
 	]),

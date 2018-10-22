@@ -177,6 +177,14 @@ export const CONFIG = {
 			createStage('master', createIcon('public', calculateStateFromStatusCheck('buddy/pipeline/production'))),
 		]),
 	]),
+	'DocPlanner/geocoder-app': createRepo('develop', [
+		createCluster('', calculateClusterStateFromStageStates, [
+			createStage('develop', createIcon('bug_report', calculateStateFromStatusCheck('buddy/pipeline/Test & push from develop to master'))),
+		]),
+		createCluster('PROD', calculateClusterStateFromStageStates, [
+			createStage('master', createIcon('public', calculateStateFromStatusCheck('buddy/pipeline/Production'))),
+		]),
+	]),
 	'DocPlanner/hubspot-mirroring-app': createRepo('develop', [
 		createCluster('DEPLOY', calculateClusterStateFromStageStates, [
 			createStage('develop', createIcon('public', calculateStateFromStatusCheck('buddy/pipeline/production'))),

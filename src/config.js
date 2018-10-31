@@ -118,6 +118,14 @@ function createIcon(icon, stateFunc) {
 }
 
 export const CONFIG = {
+	'DocPlanner/axa-widget-frontend-app': createRepo('develop', [
+		createCluster('', calculateClusterStateFromStageStates, [
+			createStage('develop', createIcon('merge_type', calculateStateFromStatusCheck('buddy/pipeline/move commits from develop to master'))),
+		]),
+		createCluster('DEPLOY', calculateClusterStateFromStageStates, [
+			createStage('master', createIcon('public', calculateStateFromStatusCheck('buddy/pipeline/deploy production'))),
+		]),
+	]),
 	'DocPlanner/booking-backend-app': createRepo('develop', [
 		createCluster('', calculateClusterStateFromStageStates, [
 			createStage('develop', createIcon('bug_report', calculateStateFromStatusCheck('buddy/pipeline/tests'))),

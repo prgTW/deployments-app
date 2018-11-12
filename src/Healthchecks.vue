@@ -91,17 +91,17 @@
 		},
 		methods: {
 			fetch: function () {
-				this.isLoading = true
+				this.isLoading = true;
 				axios
 					.get('https://wt-012b9f4822e043e9d184bf6262822d15-0.sandbox.auth0-extend.com/healthchecks-status/checks')
 					.then(response => {
-						this.checks = response.data.checks
-						this.isLoading = false
+						this.checks = response.data.checks;
+						this.isLoading = false;
 						this.resetTimer()
 					})
 					.catch(error => {
 						this.checks = [];
-						this.isLoading = false
+						this.isLoading = false;
 						this.resetTimer()
 					})
 			},
@@ -116,7 +116,7 @@
 				this.refreshIntervalHandle = setInterval(() => {
 					--this.refreshTimeout;
 					if (this.refreshTimeout <= 0) {
-						this.resetTimer(false)
+						this.resetTimer(false);
 						this.fetch()
 					}
 				}, 1000)

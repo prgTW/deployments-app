@@ -16,9 +16,9 @@ import Raven from 'raven-js';
 import RavenVue from 'raven-js/plugins/vue';
 import {createStore} from "./store.js";
 
-Vue.use(VueRouter)
-Vue.use(Vuex)
-Vue.use(Vuetify)
+Vue.use(VueRouter);
+Vue.use(Vuex);
+Vue.use(Vuetify);
 
 if ('production' === APP_ENVIRONMENT) {
 	Raven
@@ -35,21 +35,21 @@ const httpLink = new HttpLink('production' === APP_ENVIRONMENT ? {
 	headers: {
 		Authorization: 'Bearer ' + APP_ACCESS_TOKEN,
 	}
-})
+});
 
 // Create the apollo client
 const apolloClient = new ApolloClient({
 	link: httpLink,
 	cache: new InMemoryCache(),
 	connectToDevTools: true,
-})
+});
 
 // Install the vue plugin
-Vue.use(VueApollo)
+Vue.use(VueApollo);
 
 const apolloProvider = new VueApollo({
 	defaultClient: apolloClient,
-})
+});
 
 const routes = [
 	{
@@ -71,7 +71,7 @@ const routes = [
 
 const router = new VueRouter({
 	routes
-})
+});
 
 const store = createStore();
 
@@ -81,4 +81,4 @@ const app = new Vue({
 	apolloProvider,
 	router,
 	render: h => h(App),
-})
+});

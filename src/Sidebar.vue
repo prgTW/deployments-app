@@ -53,11 +53,11 @@
 					}
 				},
 				result: function () {
-					this.isError = false
+					this.isError = false;
 					this.isLoading = false
 				},
 				error: () => {
-					this.isError = true
+					this.isError = true;
 					this.isLoading = false
 				},
 			},

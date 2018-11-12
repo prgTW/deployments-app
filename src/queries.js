@@ -50,7 +50,7 @@ export function buildQuery(config) {
 		return {
 			owner: owner,
 			repo: repo,
-            baseRef: cfg.baseRef,
+			baseRef: cfg.baseRef,
 			refs: _.chain(refs).uniq().value(),
 		}
 	});

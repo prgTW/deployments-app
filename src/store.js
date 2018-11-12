@@ -19,7 +19,7 @@ function createStore() {
 		},
 		mutations: {
 			toggleDark: (state) => {
-				state.isDark = !state.isDark
+				state.isDark = !state.isDark;
 				localStorage.setItem('isDark', JSON.stringify(state.isDark))
 			},
 			starRepository: (state, {owner, name, branch}) => {
@@ -27,7 +27,7 @@ function createStore() {
 				localStorage.setItem('starredRepos', JSON.stringify(state.starredRepos))
 			},
 			unstarRepository: (state, {owner, name}) => {
-				state.starredRepos = _.filter(state.starredRepos, (r) => !(r.owner === owner && r.name === name))
+				state.starredRepos = _.filter(state.starredRepos, (r) => !(r.owner === owner && r.name === name));
 				localStorage.setItem('starredRepos', JSON.stringify(state.starredRepos))
 			},
 		}

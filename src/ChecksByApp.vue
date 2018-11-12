@@ -40,6 +40,7 @@
 	import ChecksByTag from "./ChecksByTag";
 	import {mapGetters} from 'vuex';
 	import Stats from "./Stats";
+	import * as _ from "lodash";
 
 	export default {
 		name: 'ChecksByApp',
@@ -53,8 +54,8 @@
 				let data = {};
 
 				_.forEach(this.checks, check => {
-					const tags = check.tags.split(' ')
-					let apps = _.filter(tags, tag => _.endsWith(tag, '-app'))
+					const tags = check.tags.split(' ');
+					let apps = _.filter(tags, tag => _.endsWith(tag, '-app'));
 
 					if (0 === apps.length) {
 						apps = ['_other'];
@@ -80,8 +81,8 @@
 						(checkData) => -checkData.stats.grace,
 						(checkData) => checkData.appName
 					])
-					.value()
-				data = _.keyBy(data, ({appName}) => appName)
+					.value();
+				data = _.keyBy(data, ({appName}) => appName);
 
 				return data
 			},

@@ -1,3 +1,5 @@
+import * as _ from "lodash";
+
 export function resetAnimations() {
 	let pulsatingElements = document.querySelectorAll('.pulsating');
 	_.forEach(pulsatingElements, (elem) => {

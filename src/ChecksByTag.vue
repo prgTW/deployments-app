@@ -33,6 +33,7 @@
 	import Checks from "./Checks";
 	import Stats from "./Stats";
 	import {mapGetters} from 'vuex';
+	import * as _ from "lodash";
 
 	export default {
 		name: 'ChecksByTag',
@@ -50,7 +51,7 @@
 						.chain(check.tags.split(' '))
 						.filter(tag => false === _.startsWith(tag, 'app-'))
 						.filter(tag => false === _.endsWith(tag, '-app'))
-						.value()
+						.value();
 
 					if (0 === tags.length) {
 						tags = ['__untagged'];
@@ -76,8 +77,8 @@
 						(checkData) => -checkData.stats.grace,
 						(checkData) => checkData.tagName
 					])
-					.value()
-				data = _.keyBy(data, ({tagName}) => tagName)
+					.value();
+				data = _.keyBy(data, ({tagName}) => tagName);
 
 				return data
 			},

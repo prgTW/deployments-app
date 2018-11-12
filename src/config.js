@@ -5,7 +5,7 @@ export const STATE = {
 	IN_PROGRESS: 'in_progress',
 	FAILURE: 'failure',
 	SUCCESS: 'success',
-}
+};
 
 function getContextTargetUrl(commit, context) {
 	if (!commit.status || [] === commit.status.contexts) {
@@ -76,7 +76,7 @@ function calculateStateFromStatusCheck(context) {
 				return status.context === context
 			})
 			.first()
-			.value()
+			.value();
 
 		if (undefined === currentContext) {
 			return {
@@ -301,7 +301,7 @@ export const CONFIG = {
 			createStage('master', createIcon('public', calculateStateFromStatusCheck('buddy/pipeline/production'))),
 		]),
 	]),
-}
+};
 
 export function getConfig(owner, repo) {
 	for (let key in CONFIG) {

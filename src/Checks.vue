@@ -52,6 +52,7 @@
 
 <script>
 	import {mapGetters} from 'vuex';
+	import * as _ from "lodash";
 
 	export default {
 		name: 'Checks',
@@ -77,7 +78,7 @@
 							.replace(/^\[\w+\]\s*/, '')
 							.value()
 					})
-					.value()
+					.value();
 				data = _
 					.chain(data)
 					.map((checks, checkName) => {
@@ -104,7 +105,7 @@
 								}))
 								.reduce((acc, {status, tags}) => {
 									for (let tag of tags) {
-										acc[tag] = acc[tag] || {up: 0, down: 0, grace: 0, paused: 0, new: 0}
+										acc[tag] = acc[tag] || {up: 0, down: 0, grace: 0, paused: 0, new: 0};
 										++acc[tag][status];
 									}
 
@@ -127,7 +128,7 @@
 						(checkData) => -checkData.stats.grace,
 						(checkData) => checkData.checkName
 					])
-					.value()
+					.value();
 
 				return data
 			},

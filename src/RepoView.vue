@@ -1,5 +1,5 @@
 <template>
-	<Centered v-if="isLoading && 0 === history.length" />
+	<Centered v-if="isLoading && 0 === history.length"/>
 	<v-layout row justify-center v-else>
 		<v-flex xs12 xl10>
 			<v-btn
@@ -50,15 +50,15 @@
 					}
 				},
 				result(result) {
-					this.history = result.data.repository.ref.target.history.edges
-					this.hasNextPage = result.data.repository.ref.target.history.pageInfo.hasNextPage
-					this.isLoading = false
-					this.resetTimer()
+					this.history = result.data.repository.ref.target.history.edges;
+					this.hasNextPage = result.data.repository.ref.target.history.pageInfo.hasNextPage;
+					this.isLoading = false;
+					this.resetTimer();
 					resetAnimations()
 				},
 				error() {
-					this.isLoading = false
-					this.resetTimer()
+					this.isLoading = false;
+					this.resetTimer();
 					resetAnimations()
 				}
 			},
@@ -74,8 +74,8 @@
 		}),
 		computed: {
 			commitsByDate: function () {
-				let config = getConfig(this.$route.params.owner, this.$route.params.repo)
-				let clonedCommits = _.cloneDeep(this.history)
+				let config = getConfig(this.$route.params.owner, this.$route.params.repo);
+				let clonedCommits = _.cloneDeep(this.history);
 
 				if (!clonedCommits.length) {
 					return [];
@@ -104,7 +104,7 @@
 								commitIdx > 0 ? previousState[commitIdx - 1][clusterIdx]['stages'][stageIdx] : undefined
 							);
 
-							previousState[commitIdx][clusterIdx]['stages'][stageIdx] = stageData
+							previousState[commitIdx][clusterIdx]['stages'][stageIdx] = stageData;
 
 							return stageData;
 						});
@@ -116,7 +116,7 @@
 							stagesData,
 						);
 
-						previousState[commitIdx][clusterIdx]['state'] = clusterState
+						previousState[commitIdx][clusterIdx]['state'] = clusterState;
 
 						return {
 							name: cluster.name,
@@ -134,7 +134,7 @@
 		},
 		methods: {
 			fetchCommits: function () {
-				this.isLoading = true
+				this.isLoading = true;
 				this.$apollo.queries.repository.refetch()
 			},
 			resetTimer: function (queueNext = true) {
@@ -148,7 +148,7 @@
 				this.refreshIntervalHandle = setInterval(() => {
 					--this.refreshTimeout;
 					if (this.refreshTimeout <= 0) {
-						this.resetTimer(false)
+						this.resetTimer(false);
 						this.fetchCommits()
 					}
 				}, 1000)

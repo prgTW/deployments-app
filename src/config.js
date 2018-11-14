@@ -7,6 +7,17 @@ export const STATE = {
 	SUCCESS: 'success',
 };
 
+const ICON = {
+	CIRCLECI_TESTS: 'bug_report',
+	CIRCLECI_BUILD: 'category',
+	DOCKERIZING: 'layers',
+	DEPLOY_PREP: 'settings',
+	DEPLOY_STAG: 'business',
+	DEPLOY_PROD: 'public',
+	DEPLOY_TEST: 'search',
+	PHRASEAPP: 'flag',
+};
+
 function getContextTargetUrl(commit, context) {
 	if (!commit.status || [] === commit.status.contexts) {
 		return undefined;
@@ -120,186 +131,187 @@ function createIcon(icon, stateFunc) {
 export const CONFIG = {
 	'DocPlanner/axa-widget-frontend-app': createRepo('develop', [
 		createCluster('', calculateClusterStateFromStageStates, [
-			createStage('develop', createIcon('merge_type', calculateStateFromStatusCheck('buddy/pipeline/move commits from develop to master'))),
+			createStage('develop', createIcon(ICON.DOCKERIZING, calculateStateFromStatusCheck('buddy/pipeline/move commits from develop to master'))),
 		]),
 		createCluster('DEPLOY', calculateClusterStateFromStageStates, [
-			createStage('master', createIcon('public', calculateStateFromStatusCheck('buddy/pipeline/deploy production'))),
+			createStage('master', createIcon(ICON.DEPLOY_PROD, calculateStateFromStatusCheck('buddy/pipeline/deploy production'))),
 		]),
 	]),
 	'DocPlanner/booking-backend-app': createRepo('develop', [
 		createCluster('', calculateClusterStateFromStageStates, [
-			createStage('develop', createIcon('bug_report', calculateStateFromStatusCheck('buddy/pipeline/tests'))),
+			createStage('develop', createIcon(ICON.DOCKERIZING, calculateStateFromStatusCheck('buddy/pipeline/tests'))),
 		]),
 		createCluster('DEPLOY', calculateClusterStateFromStageStates, [
-			createStage('master', createIcon('public', calculateStateFromStatusCheck('buddy/pipeline/production'))),
+			createStage('master', createIcon(ICON.DEPLOY_PROD, calculateStateFromStatusCheck('buddy/pipeline/production'))),
 		]),
 	]),
 	'DocPlanner/booking-front-app': createRepo('develop', [
 		createCluster('', calculateClusterStateFromStageStates, [
-			createStage('develop', createIcon('bug_report', calculateStateFromStatusCheck('buddy/pipeline/tests'))),
+			createStage('develop', createIcon(ICON.DOCKERIZING, calculateStateFromStatusCheck('buddy/pipeline/tests'))),
 		]),
 		createCluster('DEPLOY', calculateClusterStateFromStageStates, [
-			createStage('master', createIcon('business', calculateStateFromStatusCheck('buddy/pipeline/staging'))),
+			createStage('master', createIcon(ICON.DEPLOY_STAG, calculateStateFromStatusCheck('buddy/pipeline/staging'))),
 		]),
 	]),
 	'DocPlanner/brag-app': createRepo('develop', [
 		createCluster('', calculateClusterStateFromStageStates, [
-			createStage('develop', createIcon('bug_report', calculateStateFromStatusCheck('buddy/pipeline/Test & push from develop to staging'))),
+			createStage('develop', createIcon(ICON.DOCKERIZING, calculateStateFromStatusCheck('buddy/pipeline/Test & push from develop to staging'))),
 		]),
 		createCluster('DEPLOY', calculateClusterStateFromStageStates, [
-			createStage('staging', createIcon('business', calculateStateFromStatusCheck('buddy/pipeline/staging'))),
-			createStage('master', createIcon('public', calculateStateFromStatusCheck('buddy/pipeline/production'))),
+			createStage('staging', createIcon(ICON.DEPLOY_STAG, calculateStateFromStatusCheck('buddy/pipeline/staging'))),
+			createStage('master', createIcon(ICON.DEPLOY_PROD, calculateStateFromStatusCheck('buddy/pipeline/production'))),
 		]),
 	]),
 	'DocPlanner/crm-app': createRepo('develop', [
 		createCluster('PROD', calculateClusterStateFromStageStates, [
-			createStage('develop', createIcon('settings', calculateStateFromStatusCheck('buddy/pipeline/production'))),
-			createStage('develop', createIcon('public', calculateStateFromStatusCheck('buddy/pipeline/production-k1'))),
-			createStage('develop', createIcon('public', calculateStateFromStatusCheck('buddy/pipeline/production-k2'))),
+			createStage('develop', createIcon(ICON.DEPLOY_PREP, calculateStateFromStatusCheck('buddy/pipeline/production'))),
+			createStage('develop', createIcon(ICON.DEPLOY_PROD, calculateStateFromStatusCheck('buddy/pipeline/production-k1'))),
+			createStage('develop', createIcon(ICON.DEPLOY_PROD, calculateStateFromStatusCheck('buddy/pipeline/production-k2'))),
 		]),
 	]),
 	'DocPlanner/dashboard-app': createRepo('develop', [
 		createCluster('', calculateClusterStateFromStageStates, [
-			createStage('develop', createIcon('bug_report', calculateStateFromStatusCheck('buddy/pipeline/Test & push from develop to staging'))),
+			createStage('develop', createIcon(ICON.DOCKERIZING, calculateStateFromStatusCheck('buddy/pipeline/Test & push from develop to staging'))),
 		]),
 		createCluster('DEPLOY', calculateClusterStateFromStageStates, [
-			createStage('staging', createIcon('business', calculateStateFromStatusCheck('buddy/pipeline/Deploy staging'))),
-			createStage('master', createIcon('public', calculateStateFromStatusCheck('buddy/pipeline/Deploy production'))),
+			createStage('staging', createIcon(ICON.DEPLOY_STAG, calculateStateFromStatusCheck('buddy/pipeline/Deploy staging'))),
+			createStage('master', createIcon(ICON.DEPLOY_PROD, calculateStateFromStatusCheck('buddy/pipeline/Deploy production'))),
 		]),
 	]),
 	'DocPlanner/dp-icons': createRepo('develop', [
 		createCluster('PUBLISH', calculateClusterStateFromStageStates, [
-			createStage('master', createIcon('public', calculateStateFromStatusCheck('buddy/pipeline/publish package'))),
+			createStage('master', createIcon(ICON.DEPLOY_PROD, calculateStateFromStatusCheck('buddy/pipeline/publish package'))),
 		]),
 	]),
 	'DocPlanner/dp-ui-kit': createRepo('develop', [
 		createCluster('', calculateClusterStateFromStageStates, [
-			createStage('develop', createIcon('bug_report', calculateStateFromStatusCheck('buddy/pipeline/publish package'))),
+			createStage('develop', createIcon(ICON.DOCKERIZING, calculateStateFromStatusCheck('buddy/pipeline/publish package'))),
 		]),
 		createCluster('PUBLISH', calculateClusterStateFromStageStates, [
-			createStage('master', createIcon('public', calculateStateFromStatusCheck('buddy/pipeline/publish package'))),
+			createStage('master', createIcon(ICON.DEPLOY_PROD, calculateStateFromStatusCheck('buddy/pipeline/publish package'))),
 		]),
 	]),
 	'DocPlanner/fetcher-app': createRepo('develop', [
 		createCluster('DEPLOY', calculateClusterStateFromStageStates, [
-			createStage('master', createIcon('public', calculateStateFromStatusCheck('buddy/pipeline/production'))),
+			createStage('master', createIcon(ICON.DEPLOY_PROD, calculateStateFromStatusCheck('buddy/pipeline/production'))),
 		]),
 	]),
 	'DocPlanner/geocoder-app': createRepo('develop', [
 		createCluster('', calculateClusterStateFromStageStates, [
-			createStage('develop', createIcon('bug_report', calculateStateFromStatusCheck('buddy/pipeline/Test & push from develop to master'))),
+			createStage('develop', createIcon(ICON.DOCKERIZING, calculateStateFromStatusCheck('buddy/pipeline/Test & push from develop to master'))),
 		]),
 		createCluster('PROD', calculateClusterStateFromStageStates, [
-			createStage('master', createIcon('public', calculateStateFromStatusCheck('buddy/pipeline/Production'))),
+			createStage('master', createIcon(ICON.DEPLOY_PROD, calculateStateFromStatusCheck('buddy/pipeline/Production'))),
 		]),
 	]),
 	'DocPlanner/hubspot-mirroring-app': createRepo('develop', [
 		createCluster('DEPLOY', calculateClusterStateFromStageStates, [
-			createStage('develop', createIcon('public', calculateStateFromStatusCheck('buddy/pipeline/production'))),
+			createStage('develop', createIcon(ICON.DEPLOY_PROD, calculateStateFromStatusCheck('buddy/pipeline/production'))),
 		]),
 	]),
 	'DocPlanner/integrations-app': createRepo('develop', [
 		createCluster('', calculateClusterStateFromStageStates, [
-			createStage('develop', createIcon('bug_report', calculateStateFromStatusCheck('buddy/pipeline/Test & push from develop to staging'))),
+			createStage('develop', createIcon(ICON.DOCKERIZING, calculateStateFromStatusCheck('buddy/pipeline/Test & push from develop to staging'))),
 		]),
 		createCluster('DEPLOY', calculateClusterStateFromStageStates, [
-			createStage('staging', createIcon('business', calculateStateFromStatusCheck('buddy/pipeline/staging'))),
-			createStage('master', createIcon('public', calculateStateFromStatusCheck('buddy/pipeline/production'))),
+			createStage('staging', createIcon(ICON.DEPLOY_STAG, calculateStateFromStatusCheck('buddy/pipeline/staging'))),
+			createStage('master', createIcon(ICON.DEPLOY_PROD, calculateStateFromStatusCheck('buddy/pipeline/production'))),
 		]),
 	]),
 	'DocPlanner/logger-app': createRepo('develop', [
 		createCluster('PROD', calculateClusterStateFromStageStates, [
-			createStage('master', createIcon('public', calculateStateFromStatusCheck('buddy/pipeline/production'))),
+			createStage('master', createIcon(ICON.DEPLOY_PROD, calculateStateFromStatusCheck('buddy/pipeline/production'))),
 		]),
 	]),
 	'DocPlanner/metrix-app': createRepo('develop', [
 		createCluster('', calculateClusterStateFromStageStates, [
-			createStage('develop', createIcon('bug_report', calculateStateFromStatusCheck('ci/circleci'))),
+			createStage('develop', createIcon(ICON.CIRCLECI_TESTS, calculateStateFromStatusCheck('ci/circleci'))),
 		]),
 		createCluster('PROD', calculateClusterStateFromStageStates, [
-			createStage('master', createIcon('public', calculateStateFromStatusCheck('buddy/pipeline/production'))),
+			createStage('master', createIcon(ICON.DEPLOY_PROD, calculateStateFromStatusCheck('buddy/pipeline/production'))),
 		]),
 	]),
 	'DocPlanner/monolith-app': createRepo('develop', [
 		createCluster('', calculateClusterStateFromStageStates, [
-			createStage('develop', createIcon('bug_report', calculateStateFromStatusCheck('ci/circleci'))),
+			createStage('develop', createIcon(ICON.CIRCLECI_TESTS, calculateStateFromStatusCheck('ci/circleci'))),
 		]),
 		createCluster('', calculateClusterStateFromStageStates, [
-			createStage('develop', createIcon('flag', calculateStateFromStatusCheck('buddy/pipeline/phraseapp update'))),
+			createStage('develop', createIcon(ICON.PHRASEAPP, calculateStateFromStatusCheck('buddy/pipeline/phraseapp update'))),
 		]),
 		createCluster('STAG', calculateClusterStateFromStageStates, [
-			createStage('staging', createIcon('settings', calculateStateFromStatusCheck('buddy/pipeline/staging'))),
-			createStage('staging', createIcon('business', calculateStateFromStatusCheck('buddy/pipeline/staging-k1'))),
-			createStage('staging', createIcon('business', calculateStateFromStatusCheck('buddy/pipeline/staging-k2'))),
-			createStage('staging', createIcon('search', calculateStateFromStatusCheck('buddy/pipeline/zltapp-k2'))),
+			createStage('staging', createIcon(ICON.DEPLOY_PREP, calculateStateFromStatusCheck('buddy/pipeline/staging'))),
+			createStage('staging', createIcon(ICON.DEPLOY_STAG, calculateStateFromStatusCheck('buddy/pipeline/staging-k1'))),
+			createStage('staging', createIcon(ICON.DEPLOY_STAG, calculateStateFromStatusCheck('buddy/pipeline/staging-k2'))),
+			createStage('staging', createIcon(ICON.DEPLOY_TEST, calculateStateFromStatusCheck('buddy/pipeline/zltapp-k2'))),
 		]),
 		createCluster('PROD', calculateClusterStateFromStageStates, [
-			createStage('master', createIcon('settings', calculateStateFromStatusCheck('buddy/pipeline/production'))),
-			createStage('master', createIcon('public', calculateStateFromStatusCheck('buddy/pipeline/production-k1'))),
-			createStage('master', createIcon('public', calculateStateFromStatusCheck('buddy/pipeline/production-k2'))),
+			createStage('master', createIcon(ICON.DEPLOY_PREP, calculateStateFromStatusCheck('buddy/pipeline/production'))),
+			createStage('master', createIcon(ICON.DEPLOY_PROD, calculateStateFromStatusCheck('buddy/pipeline/production-k1'))),
+			createStage('master', createIcon(ICON.DEPLOY_PROD, calculateStateFromStatusCheck('buddy/pipeline/production-k2'))),
 		]),
 	]),
 	'DocPlanner/mydentista': createRepo('develop', [
 		createCluster('DEPLOY', calculateClusterStateFromStageStates, [
-			createStage('master', createIcon('public', calculateStateFromStatusCheck('buddy/pipeline/production'))),
+			createStage('master', createIcon(ICON.DEPLOY_PROD, calculateStateFromStatusCheck('buddy/pipeline/production'))),
 		]),
 	]),
 	'DocPlanner/opinion-moderation-app': createRepo('develop', [
 		createCluster('DEPLOY', calculateClusterStateFromStageStates, [
-			createStage('master', createIcon('public', calculateStateFromStatusCheck('buddy/pipeline/production'))),
+			createStage('master', createIcon(ICON.DEPLOY_PROD, calculateStateFromStatusCheck('buddy/pipeline/production'))),
 		]),
 	]),
 	'DocPlanner/opinions-app': createRepo('develop', [
 		createCluster('asd', calculateClusterStateFromStageStates, [
-			createStage('develop', createIcon('build', calculateStateFromStatusCheck('buddy/pipeline/asd'))),
+			createStage('develop', createIcon(ICON.DOCKERIZING, calculateStateFromStatusCheck('buddy/pipeline/asd'))),
 		]),
 	]),
 	'DocPlanner/payments-app': createRepo('develop', [
 		createCluster('', calculateClusterStateFromStageStates, [
-			createStage('develop', createIcon('bug_report', calculateStateFromStatusCheck('buddy/pipeline/Test & push from develop to staging'))),
+			createStage('develop', createIcon(ICON.DOCKERIZING, calculateStateFromStatusCheck('buddy/pipeline/Test & push from develop to staging'))),
 		]),
 		createCluster('STAG', calculateClusterStateFromStageStates, [
-			createStage('staging', createIcon('settings', calculateStateFromStatusCheck('buddy/pipeline/staging'))),
-			createStage('staging', createIcon('business', calculateStateFromStatusCheck('buddy/pipeline/staging-k1'))),
-			createStage('staging', createIcon('business', calculateStateFromStatusCheck('buddy/pipeline/staging-k2'))),
+			createStage('staging', createIcon(ICON.DEPLOY_PREP, calculateStateFromStatusCheck('buddy/pipeline/staging'))),
+			createStage('staging', createIcon(ICON.DEPLOY_STAG, calculateStateFromStatusCheck('buddy/pipeline/staging-k1'))),
+			createStage('staging', createIcon(ICON.DEPLOY_STAG, calculateStateFromStatusCheck('buddy/pipeline/staging-k2'))),
 		]),
 		createCluster('PROD', calculateClusterStateFromStageStates, [
-			createStage('master', createIcon('settings', calculateStateFromStatusCheck('buddy/pipeline/production'))),
-			createStage('master', createIcon('public', calculateStateFromStatusCheck('buddy/pipeline/production-k1'))),
-			createStage('master', createIcon('public', calculateStateFromStatusCheck('buddy/pipeline/production-k2'))),
+			createStage('master', createIcon(ICON.DEPLOY_PREP, calculateStateFromStatusCheck('buddy/pipeline/production'))),
+			createStage('master', createIcon(ICON.DEPLOY_PROD, calculateStateFromStatusCheck('buddy/pipeline/production-k1'))),
+			createStage('master', createIcon(ICON.DEPLOY_PROD, calculateStateFromStatusCheck('buddy/pipeline/production-k2'))),
 		]),
 	]),
 	'DocPlanner/reservation-app': createRepo('develop', [
 		createCluster('DEPLOY', calculateClusterStateFromStageStates, [
-			createStage('master', createIcon('business', calculateStateFromStatusCheck('buddy/pipeline/staging'))),
-			createStage('production', createIcon('public', calculateStateFromStatusCheck('buddy/pipeline/production'))),
+			createStage('master', createIcon(ICON.DEPLOY_STAG, calculateStateFromStatusCheck('buddy/pipeline/staging'))),
+			createStage('production', createIcon(ICON.DEPLOY_PROD, calculateStateFromStatusCheck('buddy/pipeline/production'))),
 		]),
 	]),
 	'DocPlanner/sso-app': createRepo('develop', [
 		createCluster('', calculateClusterStateFromStageStates, [
-			createStage('develop', createIcon('bug_report', calculateStateFromStatusCheck('ci/circleci'))),
-			createStage('develop', createIcon('layers', calculateStateFromStatusCheck('buddy/pipeline/Test & push from develop to staging'))),
+			createStage('develop', createIcon(ICON.CIRCLECI_TESTS, calculateStateFromStatusCheck('ci/circleci: tests'))),
+			createStage('develop', createIcon(ICON.CIRCLECI_BUILD, calculateStateFromStatusCheck('ci/circleci: build'))),
+			createStage('develop', createIcon(ICON.DOCKERIZING, calculateStateFromStatusCheck('buddy/pipeline/Test & push from develop to staging'))),
 		]),
 		createCluster('STAG', calculateClusterStateFromStageStates, [
-			createStage('staging', createIcon('settings', calculateStateFromStatusCheck('buddy/pipeline/staging'))),
-			createStage('staging', createIcon('business', calculateStateFromStatusCheck('buddy/pipeline/staging-k1'))),
-			createStage('staging', createIcon('business', calculateStateFromStatusCheck('buddy/pipeline/staging-k2'))),
+			createStage('staging', createIcon(ICON.DEPLOY_PREP, calculateStateFromStatusCheck('buddy/pipeline/staging'))),
+			createStage('staging', createIcon(ICON.DEPLOY_STAG, calculateStateFromStatusCheck('buddy/pipeline/staging-k1'))),
+			createStage('staging', createIcon(ICON.DEPLOY_STAG, calculateStateFromStatusCheck('buddy/pipeline/staging-k2'))),
 		]),
 		createCluster('PROD', calculateClusterStateFromStageStates, [
-			createStage('master', createIcon('settings', calculateStateFromStatusCheck('buddy/pipeline/production'))),
-			createStage('master', createIcon('public', calculateStateFromStatusCheck('buddy/pipeline/production-k1'))),
-			createStage('master', createIcon('public', calculateStateFromStatusCheck('buddy/pipeline/production-k2'))),
+			createStage('master', createIcon(ICON.DEPLOY_PREP, calculateStateFromStatusCheck('buddy/pipeline/production'))),
+			createStage('master', createIcon(ICON.DEPLOY_PROD, calculateStateFromStatusCheck('buddy/pipeline/production-k1'))),
+			createStage('master', createIcon(ICON.DEPLOY_PROD, calculateStateFromStatusCheck('buddy/pipeline/production-k2'))),
 		]),
 	]),
 	'DocPlanner/voicemail-app': createRepo('develop', [
 		createCluster('DEPLOY', calculateClusterStateFromStageStates, [
-			createStage('staging', createIcon('business', calculateStateFromStatusCheck('buddy/pipeline/staging'))),
-			createStage('master', createIcon('public', calculateStateFromStatusCheck('buddy/pipeline/Deploy on production'))),
+			createStage('staging', createIcon(ICON.DEPLOY_STAG, calculateStateFromStatusCheck('buddy/pipeline/staging'))),
+			createStage('master', createIcon(ICON.DEPLOY_PROD, calculateStateFromStatusCheck('buddy/pipeline/Deploy on production'))),
 		]),
 	]),
 	'DocPlanner/websites-app': createRepo('develop', [
 		createCluster('DEPLOY', calculateClusterStateFromStageStates, [
-			createStage('master', createIcon('public', calculateStateFromStatusCheck('buddy/pipeline/production'))),
+			createStage('master', createIcon(ICON.DEPLOY_PROD, calculateStateFromStatusCheck('buddy/pipeline/production'))),
 		]),
 	]),
 };

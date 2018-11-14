@@ -277,7 +277,8 @@ export const CONFIG = {
 	]),
 	'DocPlanner/sso-app': createRepo('develop', [
 		createCluster('', calculateClusterStateFromStageStates, [
-			createStage('develop', createIcon('bug_report', calculateStateFromStatusCheck('buddy/pipeline/Test & push from develop to staging'))),
+			createStage('develop', createIcon('bug_report', calculateStateFromStatusCheck('ci/circleci'))),
+			createStage('develop', createIcon('layers', calculateStateFromStatusCheck('buddy/pipeline/Test & push from develop to staging'))),
 		]),
 		createCluster('STAG', calculateClusterStateFromStageStates, [
 			createStage('staging', createIcon('settings', calculateStateFromStatusCheck('buddy/pipeline/staging'))),

@@ -14,7 +14,7 @@ const ICON = {
 	DEPLOY_PREP: 'settings',
 	DEPLOY_STAG: 'business',
 	DEPLOY_PROD: 'public',
-	DEPLOY_TEST: 'search',
+	DEPLOY_TEST: 'thumbs_up_down',
 	PHRASEAPP: 'flag',
 };
 
